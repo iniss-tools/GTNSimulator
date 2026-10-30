@@ -37,13 +37,11 @@ internal sealed class Shots(Program.Options options, string theme, List<string> 
                      ("nastavenia-programu", "pGeneral"),
                      ("simulacia", "pSimulation"),
                      ("spojenie", "pConnection"),
-                     ("komponenty", "pDesktopComponents"),
+                     ("vzhlad", "pAppearance"),
                      ("stlpce", "pDesktopColumns"),
-                     ("lokalizacia", "pLocalization"),
                      ("klavesove-skratky", "pShortcuts"),
                      ("styly", "pStyles"),
                      ("pisma", "pFonts"),
-                     ("logovanie", "pLogging")
                  })
             Dialog($"nastavenia-programu/{slug}", () => MainWindow.CreateSettings(panel));
         Dialog("plan/pridat-meskanie", () => MainWindow.CreateDialog("ILTISSimulator.FAddDelay", 2, Day.AddHours(9).AddMinutes(15)));

@@ -5,6 +5,7 @@ using ILTISSimulator.Simulation;
 using ILTISSimulator.Tools;
 using ILTISSimulator.XML;
 using ToolsCore.Icons;
+using ToolsCore.Tools;
 
 namespace ILTISSimulator;
 
@@ -28,7 +29,6 @@ internal sealed partial class FMain
         foreach (var column in new[] { cArrival, cArrivalDelay, cDeparture, cDepartureDelay })
             column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
-        dgvPlan.RowHeadersVisible = Config.ShowRowsHeader;
         ApplyGridColumns();
         UpdateGridFonts();
     }
@@ -52,13 +52,7 @@ internal sealed partial class FMain
             column.DisplayIndex = Math.Min(setting.Order, dgvPlan.Columns.Count - 1);
         }
 
-        var last = dgvPlan.Columns.GetLastColumn(DataGridViewElementStates.Visible, DataGridViewElementStates.None);
-        foreach (DataGridViewColumn column in dgvPlan.Columns)
-            column.AutoSizeMode = Config.FitLastColumn && column == last
-                ? DataGridViewAutoSizeColumnMode.Fill
-                : DataGridViewAutoSizeColumnMode.None;
-
-        dgvPlan.RowHeadersVisible = Config.ShowRowsHeader;
+        dgvPlan.FillLastVisibleColumn();
     }
 
     private Dictionary<string, DataGridViewColumn> GridColumns() => new()

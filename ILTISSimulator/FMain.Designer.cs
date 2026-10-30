@@ -85,6 +85,7 @@
             this.tsmimDocs = new ToolsCore.Icons.IconToolStripMenuItem();
             this.tsmimInfoApp = new ToolsCore.Icons.IconToolStripMenuItem();
             this.tsmimCheckUpdates = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmimShowLogs = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMain = new System.Windows.Forms.ToolStrip();
             this.tssbOpenGvd = new ToolsCore.Icons.IconToolStripSplitButton();
             this.tsbReloadGvd = new ToolsCore.Icons.IconToolStripButton();
@@ -591,7 +592,8 @@
             this.tsmiHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmimDocs,
             this.tsmimInfoApp,
-            this.tsmimCheckUpdates});
+            this.tsmimCheckUpdates,
+            this.tsmimShowLogs});
             resources.ApplyResources(this.tsmiHelp, "tsmiHelp");
             this.tsmiHelp.Name = "tsmiHelp";
             // 
@@ -611,6 +613,11 @@
             //
             resources.ApplyResources(this.tsmimCheckUpdates, "tsmimCheckUpdates");
             this.tsmimCheckUpdates.Name = "tsmimCheckUpdates";
+            //
+            // tsmimShowLogs
+            //
+            resources.ApplyResources(this.tsmimShowLogs, "tsmimShowLogs");
+            this.tsmimShowLogs.Name = "tsmimShowLogs";
             //
             // toolStripMain
             // 
@@ -1658,6 +1665,7 @@
         private ToolsCore.Icons.IconToolStripMenuItem tsmimDocs;
         private ToolsCore.Icons.IconToolStripMenuItem tsmimInfoApp;
         private System.Windows.Forms.ToolStripMenuItem tsmimCheckUpdates;
+        private System.Windows.Forms.ToolStripMenuItem tsmimShowLogs;
         private System.Windows.Forms.ToolStrip toolStripMain;
         private ToolsCore.Icons.IconToolStripSplitButton tssbOpenGvd;
         private ToolsCore.Icons.IconToolStripButton tsbReloadGvd;

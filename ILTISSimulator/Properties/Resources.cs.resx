@@ -809,4 +809,10 @@ Hodnoty z příkazového řádku platí do zavření programu, nastavení se nem
   <data name="Main_ManualRegularTip" xml:space="preserve">
     <value>Plánovaný příjezd u 0802, odjezd u 0803 a 0804. INISS pak páruje vlak podle něj, ne podle času události.</value>
   </data>
+  <data name="Settings_ReopenLast" xml:space="preserve">
+    <value>Při spuštění otevřít naposledy otevřený grafikon</value>
+  </data>
+  <data name="Settings_ColumnsPage" xml:space="preserve">
+    <value>Tabulka plánu</value>
+  </data>
 </root>

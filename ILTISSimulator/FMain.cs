@@ -127,6 +127,7 @@ internal sealed partial class FMain : ExForm
         _commands.Add(IltisCommands.Docs, () => Utils.OpenShell(DocsLink)).Bind(tsmimDocs);
         _commands.Add(IltisCommands.InfoApp, ShowInfoApp).Bind(tsmimInfoApp);
         _commands.Add(IltisCommands.CheckUpdates, () => AppUpdates.CheckNow(this), () => AppUpdates.Available).Bind(tsmimCheckUpdates);
+        _commands.Add(IltisCommands.ShowLogs, ErrorReport.OpenLogFolder).Bind(tsmimShowLogs);
     }
 
     /// <summary>
@@ -197,16 +198,13 @@ internal sealed partial class FMain : ExForm
     #region Vzhľad a nastavenia
 
     /// <summary>
-    ///     Ponuka a panely nástrojov podľa nastavenia zobrazenia.
+    ///     Panely nástrojov podľa nastavenia zobrazenia (ponuka je vždy).
     /// </summary>
     private void ApplyMenuMode()
     {
         // Visible prvku je false, kym okno nie je zobrazene - stav sa preto berie z nastavenia
-        var menu = Config.DesktopMenuMode;
-        var toolbars = menu is DesktopMenu.MsTs or DesktopMenu.TsOnly;
-        menuStripMain.Visible = menu is DesktopMenu.MsTs or DesktopMenu.MsOnly;
-        toolStripMain.Visible = toolbars;
-        toolStripPlan.Visible = toolbars;
+        toolStripMain.Visible = Config.ShowToolbar;
+        toolStripPlan.Visible = Config.ShowToolbar;
     }
 
     /// <summary>
@@ -231,7 +229,7 @@ internal sealed partial class FMain : ExForm
 
     private void ShowAppSettings()
     {
-        using var form = new FAppSettings(_session);
+        using var form = new FAppSettings(_session, _commands);
         if (form.ShowDialog(this) != DialogResult.OK)
             return;
 

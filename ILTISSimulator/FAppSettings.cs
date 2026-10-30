@@ -2,6 +2,7 @@ using ExControls;
 using ILTISSimulator.Properties;
 using ILTISSimulator.XML;
 using ToolsCore;
+using ToolsCore.Commands;
 using ToolsCore.Forms;
 using ToolsCore.Iniss.Tools;
 using ToolsCore.XML;
@@ -19,16 +20,15 @@ internal sealed partial class FAppSettings : FAppSettingsBase
     ///     Vytvorí okno nad kópiou nastavení - do programu sa prenesú až po uložení.
     /// </summary>
     /// <param name="session">Nastavenia programu.</param>
-    public FAppSettings(AppSession<IltisConfig, IltisStyle> session)
+    /// <param name="commands">Príkazy hlavného okna - strom skratiek podľa jeho ponuky; null = podľa katalógu.</param>
+    public FAppSettings(AppSession<IltisConfig, IltisStyle> session, IEnumerable<AppCommand>? commands = null)
         : base(session.Config, new Styles<IltisStyle>(session.Styles), session.UsingStyle, typeof(IltisStyle))
     {
         _session = session;
         InitializeComponent();
 
-        Shortcuts = new ExBindingList<CmdShortcut>(Config.Shortcuts.ToRows(IltisCommands.All));
+        SetCommands(IltisCommands.All, commands);
         Columns = new ExBindingList<DesktopColumn>(Config.DesktopCols.GetValues());
-
-        dgvShortcuts.DataSource = Shortcuts;
         dgvColumns.DataSource = Columns;
     }
 
@@ -37,10 +37,13 @@ internal sealed partial class FAppSettings : FAppSettingsBase
     private new Styles<IltisStyle> Styles => (Styles<IltisStyle>)base.Styles;
 
     /// <inheritdoc />
-    protected override IList<CmdShortcut> DefaultShortcuts => ShortcutMap.DefaultRows(IltisCommands.All);
+    protected override IList<DesktopColumn> DefaultColumns => new DesktopColumns().GetValues();
 
     /// <inheritdoc />
-    protected override IList<DesktopColumn> DefaultColumns => new DesktopColumns().GetValues();
+    protected override string ReopenLastText => Resources.Settings_ReopenLast;
+
+    /// <inheritdoc />
+    protected override string ColumnsPageText => Resources.Settings_ColumnsPage;
 
     /// <inheritdoc />
     protected override void OnLoad()
@@ -86,7 +89,6 @@ internal sealed partial class FAppSettings : FAppSettingsBase
             return false;
         }
 
-        Config.Shortcuts.SetFromRows(Shortcuts);
         Config.DesktopCols.SetValues(Columns);
 
         Config.Simulation = Config.Simulation with

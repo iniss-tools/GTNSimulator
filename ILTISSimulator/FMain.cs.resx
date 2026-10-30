@@ -519,4 +519,7 @@
   <data name="$this.Text" xml:space="preserve">
     <value>Simulátor ILTIS</value>
   </data>
+  <data name="tsmimShowLogs.Text" xml:space="preserve">
+    <value>Otevřít složku s logy</value>
+  </data>
 </root>

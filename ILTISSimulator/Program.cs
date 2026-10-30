@@ -25,6 +25,6 @@ internal static class Program
             return;
         }
 
-        AppInit.Run(session.Config, () => new FMain(session, commandLine));
+        AppInit.Run(() => new FMain(session, commandLine));
     }
 }

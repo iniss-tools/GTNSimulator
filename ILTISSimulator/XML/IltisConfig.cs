@@ -25,7 +25,6 @@ public record IltisConfig : ConfigBase
     protected IltisConfig(IltisConfig original) : base(original)
     {
         DesktopCols = original.DesktopCols.Clone();
-        Shortcuts = original.Shortcuts.Clone();
         Connection = original.Connection with { };
         Simulation = original.Simulation with { };
         ExcludedTracks = original.ExcludedTracks.Clone();
@@ -38,11 +37,6 @@ public record IltisConfig : ConfigBase
     [XmlElement("DesktopCols")]
     public DesktopColumns DesktopCols { get; set; } = new();
 
-    /// <summary>
-    ///     Klávesové skratky príkazov hlavného okna.
-    /// </summary>
-    [XmlElement("Shortcuts")]
-    public ShortcutMap Shortcuts { get; set; } = new();
 
     /// <summary>
     ///     Spojenie s INISSom.

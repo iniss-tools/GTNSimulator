@@ -43,18 +43,20 @@ internal static class IltisCommands
     public static CommandInfo AppSettings => new("AppSettings", Resources.Cmd_AppSettings, Shortcut.CtrlShiftN);
     public static CommandInfo Docs => new("Docs", Resources.Cmd_Docs, Shortcut.F1);
 
-    // bez nastavitelnej skratky
+    // text = identifikator: v strome skratiek sa ukaze text polozky ponuky
     public static CommandInfo InfoApp => new(nameof(InfoApp), nameof(InfoApp), Shortcut.None);
     public static CommandInfo CheckUpdates => new(nameof(CheckUpdates), nameof(CheckUpdates), Shortcut.None);
+    public static CommandInfo ShowLogs => new(nameof(ShowLogs), nameof(ShowLogs), Shortcut.None);
     public static CommandInfo Exit => new(nameof(Exit), nameof(Exit), Shortcut.None);
 
     /// <summary>
-    ///     Príkazy, ktorým sa v nastaveniach dá zmeniť skratka.
+    ///     Všetky príkazy hlavného okna pre nastavenia skratiek (strom ich zoradí podľa ponuky okna).
     /// </summary>
     public static IReadOnlyList<CommandInfo> All =>
     [
         OpenGvd, ReloadGvd, OpenScenario, SaveScenario, Tracks, Connect, Plan, Start, Pause, Stop, Jump, Now, SendToIniss,
         SendNext, SendEntryRoute, SendReason, SendArrival, SendExitRoute, SendDeparture, Transfer, ExpressTransfer,
-        AddDelay, TrackClosure, Suppress, Revert, ManualMessage, TrackDiagram, HideFinished, Follow, Find, TopMost, AppSettings, Docs
+        AddDelay, TrackClosure, Suppress, Revert, ManualMessage, TrackDiagram, HideFinished, Follow, Find, TopMost, AppSettings, Docs,
+        InfoApp, CheckUpdates, ShowLogs, Exit
     ];
 }
