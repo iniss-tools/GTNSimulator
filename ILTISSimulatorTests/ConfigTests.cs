@@ -23,8 +23,7 @@ public class ConfigTests
         config.Simulation.LineTrack = "2A";
         config.View.HideFinished = true;
         config.ExcludedTracks.Set(5613600, ["BUS", "VYLUKA"]);
-        config.DesktopCols[DesktopColumns.Response].Visible = false;
-        config.DesktopCols.SetValues(config.DesktopCols.GetValues().Reverse());
+        config.SetGrid("Plan", new GridLayout { Id = "Plan", Columns = [new GridColumnLayout { Name = "cResponse", Order = 3, Visible = false, Width = 140 }] });
 
         var path = Path.Combine(Path.GetTempPath(), "ConfigTests-" + Guid.NewGuid().ToString("N") + ".xml");
         try
@@ -42,8 +41,10 @@ public class ConfigTests
             Assert.IsTrue(read.View.HideFinished);
             CollectionAssert.AreEquivalent(new[] { "BUS", "VYLUKA" }, read.ExcludedTracks.Get(5613600).ToArray());
             Assert.AreEqual(0, read.ExcludedTracks.Get(1).Count);
-            Assert.IsFalse(read.DesktopCols[DesktopColumns.Response].Visible);
-            Assert.AreEqual(DesktopColumns.Name, read.DesktopCols.GetValues()[0].PropertyName);
+            var column = read.GridOf("Plan")!.Columns.Single();
+            Assert.IsFalse(column.Visible);
+            Assert.AreEqual(140, column.Width);
+            Assert.AreEqual(3, column.Order);
         }
         finally
         {
@@ -59,11 +60,11 @@ public class ConfigTests
 
         copy.Connection.Port = 1;
         copy.ExcludedTracks.Set(1, ["X"]);
-        copy.DesktopCols[DesktopColumns.Train].Visible = false;
+        copy.SetGrid("Plan", new GridLayout { Id = "Plan" });
 
         Assert.AreEqual(4000, config.Connection.Port);
         Assert.AreEqual(0, config.ExcludedTracks.Get(1).Count);
-        Assert.IsTrue(config.DesktopCols[DesktopColumns.Train].Visible);
+        Assert.IsEmpty(config.Grids);
     }
 
     [TestMethod]

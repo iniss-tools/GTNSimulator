@@ -38,7 +38,6 @@ internal sealed class Shots(Program.Options options, string theme, List<string> 
                      ("simulacia", "pSimulation"),
                      ("spojenie", "pConnection"),
                      ("vzhlad", "pAppearance"),
-                     ("stlpce", "pDesktopColumns"),
                      ("klavesove-skratky", "pShortcuts"),
                      ("styly", "pStyles"),
                      ("pisma", "pFonts"),
@@ -213,7 +212,8 @@ internal sealed class MainWindow : IDisposable
 
     public static Form CreateSettings(string page)
     {
-        var form = CreateDialog("ILTISSimulator.FAppSettings", Program.Session);
+        // bez prikazov hlavneho okna - strom skratiek podla katalogu (Activator nepozna volitelne parametre)
+        var form = CreateDialog("ILTISSimulator.FAppSettings", Program.Session, null!);
         form.GetType().GetMethod("PreselectMenuItem", Program.Any)!.Invoke(form, [page]);
         return form;
     }

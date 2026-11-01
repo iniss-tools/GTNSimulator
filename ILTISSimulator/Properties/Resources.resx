@@ -815,7 +815,4 @@ Hodnoty z príkazového riadka platia do zatvorenia programu, nastavenia sa neme
   <data name="Settings_ReopenLast" xml:space="preserve">
     <value>Pri spustení otvoriť naposledy otvorený grafikon</value>
   </data>
-  <data name="Settings_ColumnsPage" xml:space="preserve">
-    <value>Tabuľka plánu</value>
-  </data>
 </root>

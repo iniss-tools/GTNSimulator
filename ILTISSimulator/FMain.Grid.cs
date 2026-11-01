@@ -29,7 +29,8 @@ internal sealed partial class FMain
         foreach (var column in new[] { cArrival, cArrivalDelay, cDeparture, cDepartureDelay })
             column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
-        ApplyGridColumns();
+        // poradie, sirku a viditelnost stlpcov si tabulka pamata sama (tahanie hlavicky, ponuka na hlavicke)
+        GridColumns.Attach(dgvPlan, "Plan", () => Config, SaveConfig);
         UpdateGridFonts();
     }
 
@@ -37,41 +38,6 @@ internal sealed partial class FMain
     ///     Pozadie tabuľky pod riadkami ako bunky - téma nastavuje len bunky a v svetlom režime by ostala sivá plocha.
     /// </summary>
     private void UpdateGridBackground() => dgvPlan.BackgroundColor = dgvPlan.DefaultCellStyle.BackColor;
-
-    /// <summary>
-    ///     Stĺpce podľa nastavení - viditeľnosť, poradie a najmenšia šírka, posledný vyplní zvyšok tabuľky.
-    /// </summary>
-    private void ApplyGridColumns()
-    {
-        var columns = GridColumns();
-        foreach (var setting in Config.DesktopCols.GetValues())
-        {
-            var column = columns[setting.PropertyName];
-            column.Visible = setting.Visible;
-            column.MinimumWidth = Math.Max(2, setting.MinWidth);
-            column.DisplayIndex = Math.Min(setting.Order, dgvPlan.Columns.Count - 1);
-        }
-
-        dgvPlan.FillLastVisibleColumn();
-    }
-
-    private Dictionary<string, DataGridViewColumn> GridColumns() => new()
-    {
-        [DesktopColumns.State] = cState,
-        [DesktopColumns.Train] = cTrain,
-        [DesktopColumns.Type] = cType,
-        [DesktopColumns.Routing] = cRouting,
-        [DesktopColumns.Arrival] = cArrival,
-        [DesktopColumns.ArrivalDelay] = cArrivalDelay,
-        [DesktopColumns.Departure] = cDeparture,
-        [DesktopColumns.DepartureDelay] = cDepartureDelay,
-        [DesktopColumns.Track] = cTrack,
-        [DesktopColumns.TrackSource] = cTrackSource,
-        [DesktopColumns.Reason] = cReason,
-        [DesktopColumns.Next] = cNext,
-        [DesktopColumns.Response] = cResponse,
-        [DesktopColumns.Name] = cName
-    };
 
     private void UpdateGridFonts()
     {

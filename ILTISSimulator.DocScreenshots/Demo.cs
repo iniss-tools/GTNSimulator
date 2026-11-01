@@ -29,7 +29,7 @@ internal static class Demo
     {
         // DemoInstallation otvara inst. cez kontext editora z harnessu GVDEditora - staci predvolene nastavenie
         var harness = Assembly.Load("GVDEditor.DocScreenshots");
-        var style = GVDEditor.Config.GVDEditorStyle.DefaultLightStyle;
+        var style = ToolsCore.XML.Styles<GVDEditor.Config.GVDEditorStyle>.CreateStyle(ToolsCore.XML.StyleNames.Light, ToolsCore.XML.SchemeBase.Light);
         var session = new ToolsCore.AppSession<GVDEditor.Config.GVDEditorConfig, GVDEditor.Config.GVDEditorStyle>(
             new GVDEditor.Config.GVDEditorConfig(), new ToolsCore.XML.Styles<GVDEditor.Config.GVDEditorStyle>(new List<GVDEditor.Config.GVDEditorStyle> { style }), style);
         harness.GetType("GVDEditor.DocScreenshots.Program", true)!.GetProperty("Context", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static)!

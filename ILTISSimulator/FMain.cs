@@ -218,7 +218,7 @@ internal sealed partial class FMain : ExForm
         _commands.ApplyShortcuts(Config.Shortcuts);
         AppInit.MsgBoxStyleInit(_session.UsingStyle, Config);
 
-        ApplyGridColumns();
+        dgvPlan.FillLastVisibleColumn();
         UpdateGridFonts();
         RefreshAllRows();
         UpdateStatus();
@@ -230,12 +230,14 @@ internal sealed partial class FMain : ExForm
     private void ShowAppSettings()
     {
         using var form = new FAppSettings(_session, _commands);
-        if (form.ShowDialog(this) != DialogResult.OK)
-            return;
-
-        UpdateMainUi();
-        FillManualLineTracks();
-        AppendLog(LogKind.Info, Resources.Log_SettingsChanged);
+        // po kazdom ulozeni (aj tlacidlom Pouzit pri otvorenom okne)
+        form.Applied += (_, _) =>
+        {
+            UpdateMainUi();
+            FillManualLineTracks();
+            AppendLog(LogKind.Info, Resources.Log_SettingsChanged);
+        };
+        form.ShowDialog(this);
     }
 
     private void ShowInfoApp()

@@ -22,14 +22,12 @@ internal sealed partial class FAppSettings : FAppSettingsBase
     /// <param name="session">Nastavenia programu.</param>
     /// <param name="commands">Príkazy hlavného okna - strom skratiek podľa jeho ponuky; null = podľa katalógu.</param>
     public FAppSettings(AppSession<IltisConfig, IltisStyle> session, IEnumerable<AppCommand>? commands = null)
-        : base(session.Config, new Styles<IltisStyle>(session.Styles), session.UsingStyle, typeof(IltisStyle))
+        : base(session.Config, new Styles<IltisStyle>(session.Styles), session.UsingStyle)
     {
         _session = session;
         InitializeComponent();
 
         SetCommands(IltisCommands.All, commands);
-        Columns = new ExBindingList<DesktopColumn>(Config.DesktopCols.GetValues());
-        dgvColumns.DataSource = Columns;
     }
 
     private new IltisConfig Config => (IltisConfig)base.Config;
@@ -37,13 +35,10 @@ internal sealed partial class FAppSettings : FAppSettingsBase
     private new Styles<IltisStyle> Styles => (Styles<IltisStyle>)base.Styles;
 
     /// <inheritdoc />
-    protected override IList<DesktopColumn> DefaultColumns => new DesktopColumns().GetValues();
 
     /// <inheritdoc />
     protected override string ReopenLastText => Resources.Settings_ReopenLast;
 
-    /// <inheritdoc />
-    protected override string ColumnsPageText => Resources.Settings_ColumnsPage;
 
     /// <inheritdoc />
     protected override void OnLoad()
@@ -89,7 +84,6 @@ internal sealed partial class FAppSettings : FAppSettingsBase
             return false;
         }
 
-        Config.DesktopCols.SetValues(Columns);
 
         Config.Simulation = Config.Simulation with
         {
@@ -117,9 +111,10 @@ internal sealed partial class FAppSettings : FAppSettingsBase
     /// <inheritdoc />
     protected override void SaveData()
     {
-        _session.Config = Config;
-        _session.Styles = Styles;
-        _session.UsingStyle = (IltisStyle)UsingStyle;
+        // kopie - okno po Pouzit ostava otvorene a dalsie upravy v nom nesmu menit nastavenia programu
+        _session.Config = Config with { };
+        _session.Styles = new Styles<IltisStyle>(Styles);
+        _session.UsingStyle = _session.Styles[UsingStyle.Name];
 
         var dir = AppPaths.ConfigDir;
         if (!Directory.Exists(dir))
@@ -128,12 +123,6 @@ internal sealed partial class FAppSettings : FAppSettingsBase
         Styles<IltisStyle>.WriteData(PathUtils.CombinePath(dir, FileConsts.FileStyles)!, _session.Styles);
         XmlSerialization.WriteData(PathUtils.CombinePath(dir, FileConsts.FileConfig)!, _session.Config);
     }
-
-    /// <inheritdoc />
-    protected override Style OnResetStyle(bool darkMode) => Styles<IltisStyle>.GetDefaultStyle(darkMode);
-
-    /// <inheritdoc />
-    protected override Style CreateStyleInstance(string name) => new IltisStyle { Name = name };
 
     private void cboxWatchGtnLog_CheckedChanged(object? sender, EventArgs e) => UpdateGtnLogFields();
 

@@ -1,6 +1,7 @@
 using System.Reflection;
 using ILTISSimulator.XML;
 using ToolsCore;
+using ToolsCore.XML;
 
 namespace ILTISSimulator.DocScreenshots;
 
@@ -106,7 +107,10 @@ internal static class Program
 
     private static void SetTheme(string theme)
     {
-        var style = theme == "dark" ? IltisStyle.DefaultDarkStyle : IltisStyle.DefaultLightStyle;
+        // zabudovana schema harnessu (svetla alebo tmava), zvolena aj na stranke Vzhlad
+        var style = Session.Styles[theme == "dark" ? StyleNames.Dark : StyleNames.Light];
+        Session.Styles.Active = style.Name;
+        Session.Styles.FollowSystem = false;
         Session.UsingStyle = style;
         AppInit.MsgBoxStyleInit(style, Session.Config);
     }

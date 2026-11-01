@@ -2286,14 +2286,5 @@ namespace ILTISSimulator.Properties {
                 return ResourceManager.GetString("Settings_ReopenLast", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Tabuľka plánu.
-        /// </summary>
-        internal static string Settings_ColumnsPage {
-            get {
-                return ResourceManager.GetString("Settings_ColumnsPage", resourceCulture);
-            }
-        }
     }
 }

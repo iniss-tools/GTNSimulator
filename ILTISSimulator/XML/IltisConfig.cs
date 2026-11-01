@@ -24,18 +24,12 @@ public record IltisConfig : ConfigBase
     /// </summary>
     protected IltisConfig(IltisConfig original) : base(original)
     {
-        DesktopCols = original.DesktopCols.Clone();
         Connection = original.Connection with { };
         Simulation = original.Simulation with { };
         ExcludedTracks = original.ExcludedTracks.Clone();
         View = original.View with { };
     }
 
-    /// <summary>
-    ///     Stĺpce tabuľky plánu.
-    /// </summary>
-    [XmlElement("DesktopCols")]
-    public DesktopColumns DesktopCols { get; set; } = new();
 
 
     /// <summary>
