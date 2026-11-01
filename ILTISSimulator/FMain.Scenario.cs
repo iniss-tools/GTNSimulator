@@ -3,6 +3,7 @@ using ILTISSimulator.Data;
 using ILTISSimulator.Properties;
 using ILTISSimulator.Simulation;
 using ILTISSimulator.Tools;
+using Serilog;
 
 namespace ILTISSimulator;
 
@@ -27,6 +28,7 @@ internal sealed partial class FMain
         }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException)
         {
+            Log.Error(e, "Scenar {File} sa nepodarilo ulozit", sfdScenario.FileName);
             AppendLog(LogKind.Error, Texts.F(Resources.Log_ScenarioFailed, e.Message));
         }
     }
@@ -59,6 +61,7 @@ internal sealed partial class FMain
         }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException or JsonException or NotSupportedException)
         {
+            Log.Error(e, "Scenar {File} sa nepodarilo nacitat", path);
             AppendLog(LogKind.Error, Texts.F(Resources.Log_ScenarioFailed, e.Message));
             return;
         }

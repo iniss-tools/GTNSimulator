@@ -4,6 +4,7 @@ using ILTISSimulator.Properties;
 using ILTISSimulator.Simulation;
 using ILTISSimulator.Tools;
 using ILTISSimulator.XML;
+using Serilog;
 using ToolsCore.Commands;
 using ToolsCore.Forms;
 using ToolsCore.Iniss.Tools;
@@ -261,7 +262,7 @@ internal sealed partial class FMain : ExForm
         }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException or InvalidOperationException)
         {
-            Log.Exception(e);
+            Log.Warning(e, "Nastavenia simulatora sa nepodarilo ulozit");
             AppendLog(LogKind.Error, Texts.F(Resources.Log_ConfigSaveFailed, e.Message));
         }
     }

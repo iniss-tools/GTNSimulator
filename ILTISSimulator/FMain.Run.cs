@@ -4,6 +4,7 @@ using ILTISSimulator.Net;
 using ILTISSimulator.Properties;
 using ILTISSimulator.Simulation;
 using ILTISSimulator.Tools;
+using Serilog;
 
 namespace ILTISSimulator;
 
@@ -99,6 +100,7 @@ internal sealed partial class FMain
     {
         if (_client is { IsConnected: true })
         {
+            Log.Information("Spojenie s INISS {Host}:{Port} zatvorene", _client.Host, _client.Port);
             _client.Dispose();
             _client = null;
             AppendLog(LogKind.Info, Resources.Log_Disconnected);
@@ -120,6 +122,7 @@ internal sealed partial class FMain
         catch (Exception e) when (e is System.Net.Sockets.SocketException or IOException or ArgumentException)
         {
             _client = null;
+            Log.Warning(e, "Pripojenie k INISS {Host}:{Port} zlyhalo", host, port);
             AppendLog(LogKind.Error, Texts.F(Resources.Log_ConnectFailed, host, port, e.Message));
         }
 
@@ -206,6 +209,7 @@ internal sealed partial class FMain
         catch (Exception e) when (e is ArgumentException or InvalidOperationException)
         {
             DisposeEngine();
+            Log.Error(e, "Naplanovanie dna {Day:yyyy-MM-dd} od {From:HH:mm} zlyhalo", day, from);
             AppendLog(LogKind.Error, Texts.F(Resources.Log_PlanFailed, e.Message));
             return false;
         }
@@ -395,6 +399,7 @@ internal sealed partial class FMain
                 catch (Exception ex) when (ex is IOException or System.Net.Sockets.SocketException or ObjectDisposedException
                                                or InvalidOperationException)
                 {
+                    Log.Warning(ex, "Spravu {Message} sa nepodarilo odoslat", e.Message);
                     error = ex.Message;
                 }
         }
@@ -451,6 +456,7 @@ internal sealed partial class FMain
         catch (Exception e) when (e is IOException or System.Net.Sockets.SocketException or ObjectDisposedException
                                       or InvalidOperationException)
         {
+            Log.Warning(e, "Rucnu spravu {Message} sa nepodarilo odoslat", text);
             AppendLog(LogKind.Error, Texts.F(Resources.Log_SendFailed, e.Message));
             return false;
         }

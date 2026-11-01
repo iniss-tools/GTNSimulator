@@ -390,6 +390,7 @@ public sealed class SimulationEngine : IDisposable
             }
             catch (Exception e)
             {
+                Serilog.Log.Error(e, "Spracovanie udalosti {Event} zlyhalo", simEvent);
                 OnLog(Texts.F(Resources.Engine_EventFailed, simEvent, e.Message));
             }
         }
@@ -422,6 +423,7 @@ public sealed class SimulationEngine : IDisposable
         }
         catch (Exception e)
         {
+            Serilog.Log.Error(e, "Tik simulacie zlyhal");
             OnLog(Texts.F(Resources.Engine_RunFailed, e.Message));
         }
         finally

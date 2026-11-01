@@ -1,6 +1,7 @@
 using System.Net.Sockets;
 using ILTISSimulator.Gtn;
 using ILTISSimulator.Properties;
+using Serilog;
 
 namespace ILTISSimulator.Net;
 
@@ -145,6 +146,7 @@ public sealed class GtnClient : IDisposable
             catch (Exception e) when (e is IOException or SocketException or ObjectDisposedException or InvalidOperationException)
             {
                 // Jeden pokus o obnovenie spojenia - INISS pri reštarte spojenie zahodí.
+                Log.Warning(e, "Spojenie s INISS {Host}:{Port} prerusene pri zapise - pripaja sa znova", Host, Port);
                 Reconnect();
                 _stream!.Write(bytes, 0, bytes.Length);
                 _stream.Flush();
@@ -166,6 +168,7 @@ public sealed class GtnClient : IDisposable
 
         _client = new TcpClient(Host, Port);
         _stream = _client.GetStream();
+        Log.Information("Pripojene k INISS {Host}:{Port}", Host, Port);
     }
 
     private void Drop()

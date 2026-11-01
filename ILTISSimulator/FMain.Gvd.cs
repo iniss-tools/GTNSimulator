@@ -3,6 +3,7 @@ using ILTISSimulator.Data;
 using ILTISSimulator.Gtn;
 using ILTISSimulator.Properties;
 using ILTISSimulator.Tools;
+using Serilog;
 using ToolsCore.Tools;
 
 namespace ILTISSimulator;
@@ -43,6 +44,7 @@ internal sealed partial class FMain
         catch (Exception e) when (e is IOException or UnauthorizedAccessException or FormatException or InvalidOperationException
                                       or ArgumentException or KeyNotFoundException)
         {
+            Log.Error(e, "Grafikon {Directory} sa nepodarilo nacitat", dir);
             AppendLog(LogKind.Error, Texts.F(Resources.Log_GvdLoadFailed, e.Message));
             return;
         }
@@ -65,6 +67,7 @@ internal sealed partial class FMain
         UpdateStatus();
         UpdateCommandStates();
 
+        Log.Information("Grafikon {Directory} nacitany: {Trains} vlakov", dir, gvd.Trains.Count);
         AppendLog(LogKind.Info, Texts.F(Resources.Log_GvdLoaded, dir, gvd.Trains.Count, UsableTracks().Count));
     }
 
