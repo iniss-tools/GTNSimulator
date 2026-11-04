@@ -2515,7 +2515,7 @@
     <value>1070, 3</value>
   </data>
   <data name="bManualSend.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 25</value>
+    <value>75, 23</value>
   </data>
   <data name="bManualSend.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>

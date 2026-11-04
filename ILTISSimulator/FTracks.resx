@@ -214,13 +214,13 @@
     <value>0, 0</value>
   </data>
   <data name="bAll.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 25</value>
+    <value>75, 23</value>
   </data>
   <data name="bAll.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
   <data name="bAll.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>90, 0</value>
+    <value>75, 0</value>
   </data>
   <data name="bAll.Text" xml:space="preserve">
     <value>Označiť všetky</value>
@@ -244,13 +244,13 @@
     <value>0, 0</value>
   </data>
   <data name="bNone.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 25</value>
+    <value>75, 23</value>
   </data>
   <data name="bNone.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
   <data name="bNone.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>90, 0</value>
+    <value>75, 0</value>
   </data>
   <data name="bNone.Text" xml:space="preserve">
     <value>Odznačiť všetky</value>
@@ -340,13 +340,13 @@
     <value>0, 0</value>
   </data>
   <data name="bCancel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 25</value>
+    <value>75, 23</value>
   </data>
   <data name="bCancel.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
   <data name="bCancel.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>90, 0</value>
+    <value>75, 0</value>
   </data>
   <data name="bCancel.Text" xml:space="preserve">
     <value>Zrušiť</value>
@@ -370,13 +370,13 @@
     <value>0, 0</value>
   </data>
   <data name="bOk.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 25</value>
+    <value>75, 23</value>
   </data>
   <data name="bOk.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
   <data name="bOk.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>90, 0</value>
+    <value>75, 0</value>
   </data>
   <data name="bOk.Text" xml:space="preserve">
     <value>OK</value>
