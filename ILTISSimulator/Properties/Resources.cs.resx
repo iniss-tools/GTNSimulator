@@ -316,8 +316,8 @@
   <data name="Error_RawBankMissing" xml:space="preserve">
     <value>Složka se zvukovou bankou {0} neexistuje.</value>
   </data>
-  <data name="Error_Iniss2ChooseStation" xml:space="preserve">
-    <value>Ve složce {0} je grafikon INISS2. Vyberte složku stanice.</value>
+  <data name="Error_Iniss2NoStation" xml:space="preserve">
+    <value>Ve složce {0} není žádná stanice ze seznamu grafikonů INISS2.</value>
   </data>
   <data name="Error_Iniss2UnknownStation" xml:space="preserve">
     <value>Stanice {0} není v seznamu grafikonů INISS2.</value>

@@ -140,6 +140,45 @@ public class Iniss2GvdReaderTests
     }
 
     [TestMethod]
+    public void FindStations_WorksFromEveryLevelOfInstallation()
+    {
+        Write("DirList.xml", """<DL><g n="2030"><i s="5400010" d="01 Lipovec" /><i s="5400020" d="02 Horany" /></g></DL>""");
+        Write(@"2030\02 Horany\PositionsDef.xml", "<POZICE />");
+
+        var root = Path.GetDirectoryName(_serverDir)!;
+        foreach (var dir in new[] { root, _serverDir, DataDir, Path.Combine(DataDir, "2030") })
+        {
+            var stations = Iniss2GvdReader.FindStations(dir);
+
+            Assert.HasCount(2, stations!, dir);
+            Assert.AreEqual(StationDir, stations![0].Directory);
+            Assert.AreEqual("2030 / 01 Lipovec", stations[0].ToString());
+        }
+    }
+
+    [TestMethod]
+    public void FindStations_SkipsMissingFolders()
+    {
+        Write("DirList.xml", """<DL><g n="2030"><i s="5400010" d="01 Lipovec" /><i s="5400020" d="02 Horany" /></g></DL>""");
+
+        Assert.HasCount(1, Iniss2GvdReader.FindStations(_serverDir)!);
+    }
+
+    [TestMethod]
+    public void FindStations_GrafikonOutsideDirListHasNoStation()
+    {
+        Write(@"2029\GV.XML", "<GV />");
+
+        Assert.IsEmpty(Iniss2GvdReader.FindStations(Path.Combine(DataDir, "2029"))!);
+    }
+
+    [TestMethod]
+    public void FindStations_OtherFolderIsNotIniss2()
+    {
+        Assert.IsNull(Iniss2GvdReader.FindStations(SimulationFixture.TestDataDir));
+    }
+
+    [TestMethod]
     public void Read_FillsStationAndServerSettings()
     {
         var gvd = Read();

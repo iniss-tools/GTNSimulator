@@ -32,6 +32,32 @@ public static class Iniss2GvdReader
         File.Exists(Path.Combine(dir, PositionsDefFile.FileName)) && Path.GetDirectoryName(Path.GetFullPath(dir)) is { } group && IsGrafikonDir(group);
 
     /// <summary>
+    ///     Nájde stanice v inštalácii INISS2 - v koreni inštalácie, v priečinku servera, v priečinku dát alebo v grafikone.
+    /// </summary>
+    /// <param name="dir">Priečinok.</param>
+    /// <returns>Stanice zo zoznamu grafikonov, alebo <see langword="null" />, ak priečinok do INISS2 nepatrí.</returns>
+    public static IReadOnlyList<Iniss2Station>? FindStations(string dir)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(dir);
+
+        var fullDir = Path.TrimEndingDirectorySeparator(Path.GetFullPath(dir));
+        var onlyGroup = IsGrafikonDir(fullDir) ? Path.GetFileName(fullDir) : null;
+
+        var dataDir = onlyGroup is not null ? Path.GetDirectoryName(fullDir)
+            : File.Exists(Path.Combine(fullDir, DirListXml.FileName)) ? fullDir
+            : Iniss2Installation.Find(fullDir)?.DataDir;
+
+        if (dataDir is null || !File.Exists(Path.Combine(dataDir, DirListXml.FileName)))
+            return null;
+
+        return DirListXml.Read(dataDir)
+            .Where(group => onlyGroup is null || string.Equals(group.Name, onlyGroup, StringComparison.OrdinalIgnoreCase))
+            .SelectMany(group => group.Items.Select(item => new Iniss2Station(group.Name, item.Directory, Path.Combine(dataDir, group.Name, item.Directory))))
+            .Where(station => IsStationDir(station.Directory))
+            .ToList();
+    }
+
+    /// <summary>
     ///     Načíta stanicu.
     /// </summary>
     /// <param name="stationDir">Priečinok stanice (<c>Server\Data\grafikon\stanica</c>).</param>
@@ -172,4 +198,16 @@ public static class Iniss2GvdReader
 
         return type;
     }
+}
+
+/// <summary>
+///     Stanica INISS2 na výber.
+/// </summary>
+/// <param name="Group">Názov grafikonu.</param>
+/// <param name="Name">Názov priečinka stanice.</param>
+/// <param name="Directory">Priečinok stanice.</param>
+public sealed record Iniss2Station(string Group, string Name, string Directory)
+{
+    /// <inheritdoc />
+    public override string ToString() => Group + " / " + Name;
 }

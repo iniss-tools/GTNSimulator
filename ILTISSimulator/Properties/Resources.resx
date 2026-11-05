@@ -316,8 +316,8 @@
   <data name="Error_RawBankMissing" xml:space="preserve">
     <value>Priečinok so zvukovou bankou {0} neexistuje.</value>
   </data>
-  <data name="Error_Iniss2ChooseStation" xml:space="preserve">
-    <value>V priečinku {0} je grafikon INISS2. Vyberte priečinok stanice.</value>
+  <data name="Error_Iniss2NoStation" xml:space="preserve">
+    <value>V priečinku {0} nie je žiadna stanica zo zoznamu grafikonov INISS2.</value>
   </data>
   <data name="Error_Iniss2UnknownStation" xml:space="preserve">
     <value>Stanica {0} nie je v zozname grafikonov INISS2.</value>

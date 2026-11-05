@@ -39,7 +39,11 @@ internal sealed partial class FMain
         GvdData gvd;
         try
         {
-            gvd = ReadGvd(dir);
+            if (ResolveStationDir(dir) is not { } resolved)
+                return;
+
+            dir = resolved;
+            gvd = Iniss2GvdReader.IsStationDir(dir) ? Iniss2GvdReader.Read(dir) : GvdLightReader.Read(dir);
         }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException or FormatException or InvalidOperationException
                                       or ArgumentException or KeyNotFoundException)
@@ -75,14 +79,24 @@ internal sealed partial class FMain
     }
 
     /// <summary>
-    ///     Načíta grafikon podľa obsahu priečinka - stanicu INISS2 alebo grafikon INISS 3.39.
+    ///     Z priečinka servera alebo grafikonu INISS2 určí stanicu, pri viacerých sa spýta. Iný priečinok ostáva bez zmeny.
     /// </summary>
-    private static GvdData ReadGvd(string dir)
+    /// <param name="dir">Otváraný priečinok.</param>
+    /// <returns>Priečinok na načítanie, alebo <see langword="null" />, ak používateľ výber zrušil.</returns>
+    private string? ResolveStationDir(string dir)
     {
-        if (Iniss2GvdReader.IsGrafikonDir(dir))
-            throw new FormatException(Texts.F(Resources.Error_Iniss2ChooseStation, dir));
+        if (Iniss2GvdReader.IsStationDir(dir) || Iniss2GvdReader.FindStations(dir) is not { } stations)
+            return dir;
 
-        return Iniss2GvdReader.IsStationDir(dir) ? Iniss2GvdReader.Read(dir) : GvdLightReader.Read(dir);
+        if (stations.Count == 0)
+            throw new FormatException(Texts.F(Resources.Error_Iniss2NoStation, dir));
+
+        if (stations.Count == 1)
+            return stations[0].Directory;
+
+        using var dialog = new FChooseStation(stations);
+
+        return dialog.ShowDialog(this) == DialogResult.OK ? dialog.Selected?.Directory : null;
     }
 
     /// <summary>

@@ -834,11 +834,11 @@ namespace ILTISSimulator.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to V priečinku {0} je grafikon INISS2. Vyberte priečinok stanice..
+        ///   Looks up a localized string similar to V priečinku {0} nie je žiadna stanica zo zoznamu grafikonov INISS2..
         /// </summary>
-        internal static string Error_Iniss2ChooseStation {
+        internal static string Error_Iniss2NoStation {
             get {
-                return ResourceManager.GetString("Error_Iniss2ChooseStation", resourceCulture);
+                return ResourceManager.GetString("Error_Iniss2NoStation", resourceCulture);
             }
         }
         
