@@ -438,6 +438,24 @@ namespace ILTISSimulator.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Grafikon INISS2: port GTN {0}. Dôvody meškania a prestupy server neprijíma..
+        /// </summary>
+        internal static string Log_Iniss2Gvd {
+            get {
+                return ResourceManager.GetString("Log_Iniss2Gvd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Grafikon INISS2: server nemá zapnuté GTN, platí port z nastavení..
+        /// </summary>
+        internal static string Log_Iniss2GtnOff {
+            get {
+                return ResourceManager.GetString("Log_Iniss2GtnOff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Načítaný grafikon {0}: {1} vlakov, {2} koľají..
         /// </summary>
         internal static string Log_GvdLoaded {
@@ -812,6 +830,24 @@ namespace ILTISSimulator.Properties {
         internal static string Error_RawBankMissing {
             get {
                 return ResourceManager.GetString("Error_RawBankMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to V priečinku {0} je grafikon INISS2. Vyberte priečinok stanice..
+        /// </summary>
+        internal static string Error_Iniss2ChooseStation {
+            get {
+                return ResourceManager.GetString("Error_Iniss2ChooseStation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stanica {0} nie je v zozname grafikonov INISS2..
+        /// </summary>
+        internal static string Error_Iniss2UnknownStation {
+            get {
+                return ResourceManager.GetString("Error_Iniss2UnknownStation", resourceCulture);
             }
         }
         

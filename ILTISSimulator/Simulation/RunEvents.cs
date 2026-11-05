@@ -28,7 +28,7 @@ internal static class RunEvents
             events.Add(new SimEvent(run, SimEventKind.EntryRoute, planned, route, run.Track));
 
             // Dôvod ide spolu s vlakovou cestou, aby ho INISS mal skôr, než odbaví hlásenie o meškaní.
-            if (run.DelayReason != 0)
+            if (SendsReason(run))
                 events.Add(new SimEvent(run, SimEventKind.DelayReason, planned, route, run.Track, run.DelayReason));
 
             events.Add(new SimEvent(run, SimEventKind.Arrival, run.PlannedArrival.Value, run.ActualArrival.Value, run.Track));
@@ -40,7 +40,7 @@ internal static class RunEvents
         var plannedExit = run.PlannedDeparture.Value - options.ExitRouteLead;
         var exit = run.ActualDeparture!.Value - options.ExitRouteLead;
 
-        if (run.DelayReason != 0 && !run.PlannedArrival.HasValue)
+        if (SendsReason(run) && !run.PlannedArrival.HasValue)
             events.Add(new SimEvent(run, SimEventKind.DelayReason, plannedExit, exit, run.Track, run.DelayReason));
 
         events.Add(new SimEvent(run, SimEventKind.ExitRoute, plannedExit, exit, run.Track));
@@ -48,6 +48,8 @@ internal static class RunEvents
 
         return events;
     }
+
+    private static bool SendsReason(TrainRun run) => run.DelayReason != 0 && !run.Iniss2;
 
     /// <summary>
     ///     Prepočíta, kedy vlak drží koľaj - od postavenia vjazdovej cesty po odchod plus rezerva.

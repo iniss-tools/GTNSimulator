@@ -39,7 +39,7 @@ internal sealed partial class FMain
         GvdData gvd;
         try
         {
-            gvd = GvdLightReader.Read(dir);
+            gvd = ReadGvd(dir);
         }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException or FormatException or InvalidOperationException
                                       or ArgumentException or KeyNotFoundException)
@@ -54,7 +54,7 @@ internal sealed partial class FMain
         _gvd = gvd;
         _gvdDir = dir;
         _excludedTracks = Config.ExcludedTracks.Get(gvd.StationId);
-        LoadDelayReasons(dir);
+        LoadDelayReasons(gvd, dir);
 
         AppRegistry.SetUsageOfProject(dir);
         AppRegistry.SetLastProject(dir);
@@ -69,6 +69,20 @@ internal sealed partial class FMain
 
         Log.Information("Grafikon {Directory} nacitany: {Trains} vlakov", dir, gvd.Trains.Count);
         AppendLog(LogKind.Info, Texts.F(Resources.Log_GvdLoaded, dir, gvd.Trains.Count, UsableTracks().Count));
+
+        if (gvd.Iniss2 is { } iniss2)
+            AppendLog(LogKind.Info, iniss2.GtnPort is { } port ? Texts.F(Resources.Log_Iniss2Gvd, port) : Resources.Log_Iniss2GtnOff);
+    }
+
+    /// <summary>
+    ///     Načíta grafikon podľa obsahu priečinka - stanicu INISS2 alebo grafikon INISS 3.39.
+    /// </summary>
+    private static GvdData ReadGvd(string dir)
+    {
+        if (Iniss2GvdReader.IsGrafikonDir(dir))
+            throw new FormatException(Texts.F(Resources.Error_Iniss2ChooseStation, dir));
+
+        return Iniss2GvdReader.IsStationDir(dir) ? Iniss2GvdReader.Read(dir) : GvdLightReader.Read(dir);
     }
 
     /// <summary>
@@ -113,8 +127,15 @@ internal sealed partial class FMain
 
     private List<DelayReason> UsableReasons() => _delayReasons.Where(reason => reason.Usable).ToList();
 
-    private void LoadDelayReasons(string gvdDir)
+    private void LoadDelayReasons(GvdData gvd, string gvdDir)
     {
+        // server INISS2 spravu s dovodom meskania neprijima
+        if (gvd.IsIniss2)
+        {
+            _delayReasons = [];
+            return;
+        }
+
         try
         {
             _delayReasons = DelayReasonReader.ReadForGvd(gvdDir);

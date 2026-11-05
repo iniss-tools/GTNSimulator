@@ -80,6 +80,8 @@ internal sealed partial class FMain : ExForm
         Func<bool> gvd = () => _gvd is not null;
         Func<bool> plan = () => _engine?.Timeline is not null;
         Func<bool> selection = () => plan() && SelectedRuns().Count > 0;
+        // server INISS2 prijima len spravy o pohybe vlaku
+        Func<bool> iniss3Selection = () => selection() && _gvd is { IsIniss2: false };
 
         _commands.Add(IltisCommands.OpenGvd, ChooseGvd).Bind(tsmimOpenGvd, tssbOpenGvd);
         _commands.Add(IltisCommands.ReloadGvd, () => LoadGvd(_gvdDir!), () => _gvdDir is not null).Bind(tsmimReloadGvd, tsbReloadGvd);
@@ -100,7 +102,7 @@ internal sealed partial class FMain : ExForm
         _commands.Add(IltisCommands.SendNext, SendNextNow, selection).Bind(tsmimSendNext, cmimSendNext, tssbSendNow);
         _commands.Add(IltisCommands.SendEntryRoute, () => SendNow(SimEventKind.EntryRoute), selection)
             .Bind(tsmimSendEntryRoute, cmimSendEntryRoute, tsmiSendNowEntryRoute);
-        _commands.Add(IltisCommands.SendReason, () => SendNow(SimEventKind.DelayReason), selection)
+        _commands.Add(IltisCommands.SendReason, () => SendNow(SimEventKind.DelayReason), iniss3Selection)
             .Bind(tsmimSendReason, cmimSendReason, tsmiSendNowReason);
         _commands.Add(IltisCommands.SendArrival, () => SendNow(SimEventKind.Arrival), selection)
             .Bind(tsmimSendArrival, cmimSendArrival, tsmiSendNowArrival);
@@ -108,9 +110,9 @@ internal sealed partial class FMain : ExForm
             .Bind(tsmimSendExitRoute, cmimSendExitRoute, tsmiSendNowExitRoute);
         _commands.Add(IltisCommands.SendDeparture, () => SendNow(SimEventKind.Departure), selection)
             .Bind(tsmimSendDeparture, cmimSendDeparture, tsmiSendNowDeparture);
-        _commands.Add(IltisCommands.Transfer, () => SendTransfer(GtnTransferKind.Normal), selection)
+        _commands.Add(IltisCommands.Transfer, () => SendTransfer(GtnTransferKind.Normal), iniss3Selection)
             .Bind(tsmimTransfer, cmimTransfer);
-        _commands.Add(IltisCommands.ExpressTransfer, () => SendTransfer(GtnTransferKind.Express), selection)
+        _commands.Add(IltisCommands.ExpressTransfer, () => SendTransfer(GtnTransferKind.Express), iniss3Selection)
             .Bind(tsmimExpressTransfer, cmimExpressTransfer);
         _commands.Add(IltisCommands.AddDelay, AddDelay, plan).Bind(tsmimAddDelay, cmimAddDelay, tsbAddDelay);
         _commands.Add(IltisCommands.TrackClosure, CloseTrack, plan).Bind(tsmimTrackClosure, tsbTrackClosure);

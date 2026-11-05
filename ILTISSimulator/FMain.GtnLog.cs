@@ -27,23 +27,33 @@ internal sealed partial class FMain
 
         tsslGtnLog.Visible = true;
 
-        var path = Config.Connection.GtnLog.Trim();
-        if (path.Length == 0 && _gvdDir is not null)
-            path = GtnLogTail.Find(_gvdDir) ?? "";
-
-        if (path.Length == 0)
+        _gtnLog = CreateGtnLog();
+        if (_gtnLog is null)
         {
             SetGtnLogStatus("status-warning", Resources.Main_GtnLogNotFound, Resources.Main_GtnLogNotFoundTip);
             return;
         }
 
-        _gtnLog = new GtnLogTail(path);
         if (_gtnLog.Exists)
-            SetGtnLogStatus("status-ok", Resources.Main_GtnLogWatching, path);
+            SetGtnLogStatus("status-ok", Resources.Main_GtnLogWatching, _gtnLog.Path);
         else
-            SetGtnLogStatus("status-warning", Resources.Main_GtnLogMissing, path);
+            SetGtnLogStatus("status-warning", Resources.Main_GtnLogMissing, _gtnLog.Path);
 
-        AppendLog(LogKind.Info, Texts.F(Resources.Log_GtnLogWatching, path));
+        AppendLog(LogKind.Info, Texts.F(Resources.Log_GtnLogWatching, _gtnLog.Path));
+    }
+
+    private GtnLogTail? CreateGtnLog()
+    {
+        var path = Config.Connection.GtnLog.Trim();
+        if (path.Length > 0)
+            return new GtnLogTail(path);
+
+        if (_gvd?.Iniss2 is { } iniss2)
+            return new GtnLogTail(() => iniss2.GtnLogFile(DateOnly.FromDateTime(DateTime.Now)));
+
+        path = _gvdDir is null ? "" : GtnLogTail.Find(_gvdDir) ?? "";
+
+        return path.Length == 0 ? null : new GtnLogTail(path);
     }
 
     private void StopGtnLog() => _gtnLog = null;

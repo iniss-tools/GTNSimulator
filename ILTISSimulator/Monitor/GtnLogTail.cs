@@ -22,7 +22,8 @@ public sealed record GtnLogEntry(DateTime Logged, string Message, string Result)
         .Distinct(StringComparer.Ordinal));
 
     /// <summary>
-    ///     Rozoberie riadok logu v tvare <c>dd.MM.yyyy HH:mm:ss: "správa" - výsledok</c>.
+    ///     Rozoberie riadok logu v tvare <c>dd.MM.yyyy HH:mm:ss: "správa" - výsledok</c>. INISS2 má pred pomlčkou
+    ///     namiesto medzery tabulátor.
     /// </summary>
     /// <param name="line">Riadok logu.</param>
     /// <param name="entry">Rozobraný záznam.</param>
@@ -39,12 +40,13 @@ public sealed record GtnLogEntry(DateTime Logged, string Message, string Result)
             !DateTime.TryParseExact(line[..quote], stampFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var logged))
             return false;
 
-        // text spravy moze obsahovat aj uvodzovky - vysledok zacina az za poslednym '" - '
-        var end = line.LastIndexOf("\" - ", StringComparison.Ordinal);
+        // text spravy moze obsahovat aj uvodzovky - vysledok zacina az za poslednym oddelovacom
+        var end = Math.Max(line.LastIndexOf("\" - ", StringComparison.Ordinal), line.LastIndexOf("\"\t - ", StringComparison.Ordinal));
         if (end < quote + 3)
             return false;
 
-        entry = new GtnLogEntry(logged, line[(quote + 3)..end], line[(end + 4)..].Trim());
+        var result = line[(end + 1)..].TrimStart();
+        entry = new GtnLogEntry(logged, line[(quote + 3)..end], result[1..].Trim());
         return true;
     }
 }
@@ -52,28 +54,39 @@ public sealed record GtnLogEntry(DateTime Logged, string Message, string Result)
 /// <summary>
 ///     Priebežné čítanie logu rozhrania INISSu - pri každom volaní <see cref="Poll" /> vráti len riadky, ktoré
 ///     medzitým pribudli. INISS log pri prekročení veľkosti odloží (<c>GTN.BAK</c>) a začne nový; kratší súbor
-///     sa preto číta znova od začiatku.
+///     sa preto číta znova od začiatku. Server INISS2 začína každý deň nový súbor.
 /// </summary>
 public sealed class GtnLogTail
 {
     private readonly Decoder _decoder = Encodings.Win1250.GetDecoder();
     private readonly StringBuilder _pending = new();
+    private readonly Func<string> _currentPath;
     private long _position;
 
     /// <summary>
     ///     Začne sledovať log. Riadky, ktoré v ňom už sú, sa preskočia.
     /// </summary>
     /// <param name="path">Cesta k logu.</param>
-    public GtnLogTail(string path)
+    public GtnLogTail(string path) : this(ConstantPath(path))
     {
-        Path = path ?? throw new ArgumentNullException(nameof(path));
+    }
+
+    /// <summary>
+    ///     Začne sledovať log, ktorého súbor sa mení. Riadky, ktoré v aktuálnom súbore už sú, sa preskočia, nový súbor
+    ///     sa číta od začiatku.
+    /// </summary>
+    /// <param name="currentPath">Vráti cestu k aktuálnemu súboru.</param>
+    public GtnLogTail(Func<string> currentPath)
+    {
+        _currentPath = currentPath ?? throw new ArgumentNullException(nameof(currentPath));
+        Path = currentPath();
         _position = Length();
     }
 
     /// <summary>
     ///     Cesta k logu.
     /// </summary>
-    public string Path { get; }
+    public string Path { get; private set; }
 
     /// <summary>
     ///     Či log existuje.
@@ -86,13 +99,18 @@ public sealed class GtnLogTail
     /// <returns>Rozobrané záznamy o správach; iné riadky sa preskočia.</returns>
     public IReadOnlyList<GtnLogEntry> Poll()
     {
+        var path = _currentPath();
+        if (path != Path)
+        {
+            Path = path;
+            Restart();
+        }
+
         var length = Length();
         if (length < _position)
         {
             // novy log po odlozeni stareho
-            _position = 0;
-            _pending.Clear();
-            _decoder.Reset();
+            Restart();
         }
 
         if (length == _position)
@@ -131,6 +149,20 @@ public sealed class GtnLogTail
                 entries.Add(entry);
 
         return entries;
+    }
+
+    private static Func<string> ConstantPath(string path)
+    {
+        ArgumentNullException.ThrowIfNull(path);
+
+        return () => path;
+    }
+
+    private void Restart()
+    {
+        _position = 0;
+        _pending.Clear();
+        _decoder.Reset();
     }
 
     private long Length()

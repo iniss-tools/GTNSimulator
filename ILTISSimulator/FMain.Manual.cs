@@ -55,7 +55,7 @@ internal sealed partial class FMain
 
     private void FillManualChoices()
     {
-        Refill(cbManualType, GtnMessageType.GetValues(), Of);
+        Refill(cbManualType, ManualTypes(), Of);
         Refill(cbManualRouteKind, Enum.GetValues<GtnRouteKind>(), Of);
         Refill(cbManualTransferKind, Enum.GetValues<GtnTransferKind>(), Of);
 
@@ -63,6 +63,13 @@ internal sealed partial class FMain
         reasons.AddRange(UsableReasons().Select(reason => reason.Number));
         Refill(cbManualDelayReason, reasons, number => number == 0 ? Resources.Manual_ReasonClear : ReasonText(number));
     }
+
+    /// <summary>
+    ///     Typy správ na výber. Server INISS2 prijíma len správy o pohybe vlaku.
+    /// </summary>
+    private IEnumerable<GtnMessageType> ManualTypes() => _gvd is { IsIniss2: true }
+        ? GtnMessageType.GetValues().Where(type => type != GtnMessageType.DelayReason && type != GtnMessageType.Transfer)
+        : GtnMessageType.GetValues();
 
     /// <summary>
     ///     Naplní zoznam možnosťami a pokúsi sa zachovať doterajší výber.
@@ -120,6 +127,12 @@ internal sealed partial class FMain
         FillManualChoices();
 
         _manualUpdating = false;
+
+        // bez pravidelneho casu server INISS2 spravu zahodi
+        if (_gvd.IsIniss2)
+            cbManualRegular.Checked = true;
+
+        UpdateManualFields();
         UpdateManualPreview();
     }
 
@@ -177,7 +190,7 @@ internal sealed partial class FMain
         if (_manualUpdating)
             return;
 
-        if (sender == cbManualType)
+        if (sender == cbManualType || sender == cbManualRouteKind)
         {
             UpdateManualFields();
 
@@ -205,18 +218,26 @@ internal sealed partial class FMain
 
     /// <summary>
     ///     Doplní pravidelný čas z plánu vlaku vybraného v tabuľke - príchod pri 0802, odchod pri 0803 a 0804.
+    ///     Server INISS2 páruje vjazdovú cestu podľa príchodu a číslo vlaku berie podľa smeru.
     /// </summary>
     private void PrefillManualRegularTime()
     {
         if (SelectedRuns() is not [var run, ..])
             return;
 
-        var planned = SelectedValue<GtnMessageType>(cbManualType) == GtnMessageType.Arrival
+        var type = SelectedValue<GtnMessageType>(cbManualType);
+        var arriving = type == GtnMessageType.Arrival ||
+                       (run.Iniss2 && type == GtnMessageType.Route && SelectedValue<GtnRouteKind>(cbManualRouteKind) == GtnRouteKind.Entry);
+
+        var planned = arriving
             ? run.PlannedArrival ?? run.PlannedDeparture
             : run.PlannedDeparture ?? run.PlannedArrival;
 
         if (planned is { } time)
             dtpManualRegular.Value = time;
+
+        if (run.Iniss2)
+            cbManualTrain.Text = arriving ? run.ArrivalNumber : run.DepartureNumber;
     }
 
     private void cbManualNow_CheckedChanged(object? sender, EventArgs e)

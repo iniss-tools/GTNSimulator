@@ -184,6 +184,12 @@
   <data name="Log_GvdLoadFailed" xml:space="preserve">
     <value>Grafikon sa nepodarilo načítať: {0}</value>
   </data>
+  <data name="Log_Iniss2Gvd" xml:space="preserve">
+    <value>Grafikon INISS2: port GTN {0}. Dôvody meškania a prestupy server neprijíma.</value>
+  </data>
+  <data name="Log_Iniss2GtnOff" xml:space="preserve">
+    <value>Grafikon INISS2: server nemá zapnuté GTN, platí port z nastavení.</value>
+  </data>
   <data name="Log_GvdLoaded" xml:space="preserve">
     <value>Načítaný grafikon {0}: {1} vlakov, {2} koľají.</value>
   </data>
@@ -309,6 +315,12 @@
   </data>
   <data name="Error_RawBankMissing" xml:space="preserve">
     <value>Priečinok so zvukovou bankou {0} neexistuje.</value>
+  </data>
+  <data name="Error_Iniss2ChooseStation" xml:space="preserve">
+    <value>V priečinku {0} je grafikon INISS2. Vyberte priečinok stanice.</value>
+  </data>
+  <data name="Error_Iniss2UnknownStation" xml:space="preserve">
+    <value>Stanica {0} nie je v zozname grafikonov INISS2.</value>
   </data>
   <data name="Error_GvdMissing" xml:space="preserve">
     <value>Priečinok s grafikonom {0} neexistuje.</value>

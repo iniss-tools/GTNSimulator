@@ -17,12 +17,29 @@ public sealed class TrainRun
         Train = train;
         PlannedArrival = plannedArrival;
         PlannedDeparture = plannedDeparture;
+        ArrivalNumber = train.Number;
+        DepartureNumber = train.Number;
     }
 
     /// <summary>
     ///     Vlak z grafikonu.
     /// </summary>
     public Train Train { get; }
+
+    /// <summary>
+    ///     Číslo vlaku v správach o príchode. V INISS2 sa môže líšiť od čísla pri odchode.
+    /// </summary>
+    public string ArrivalNumber { get; internal init; }
+
+    /// <summary>
+    ///     Číslo vlaku v správach o odchode.
+    /// </summary>
+    public string DepartureNumber { get; internal init; }
+
+    /// <summary>
+    ///     Jazda patrí serveru INISS2: správy nesú pravidelný čas a dôvod meškania sa neposiela.
+    /// </summary>
+    public bool Iniss2 { get; internal init; }
 
     /// <summary>
     ///     Príchod podľa grafikonu, alebo <see langword="null" /> pri východzom vlaku.

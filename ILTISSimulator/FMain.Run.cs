@@ -109,7 +109,7 @@ internal sealed partial class FMain
         }
 
         var host = (_commandLine.Host ?? Config.Connection.Host).Trim();
-        var port = _commandLine.Port ?? Config.Connection.Port;
+        var port = _commandLine.Port ?? _gvd?.Iniss2?.GtnPort ?? Config.Connection.Port;
 
         try
         {

@@ -35,7 +35,8 @@ public sealed class DayPlanner
     ///     dvakrát - ako končiaci a ako prechádzajúci pod pokračovaním 964. Správa poslaná podľa toho druhého
     ///     dostala od INISSu meškanie 43 minút, lebo si ju porovnal s časom toho prvého. Simulátor preto
     ///     posiela iba jednu súvislú sadu udalostí na číslo vlaku - záznam s najnižším identifikátorom,
-    ///     rovnako ako si ho vyberá INISS.
+    ///     rovnako ako si ho vyberá INISS. Server INISS2 páruje aj podľa pravidelného času, takže vlaky s rovnakým
+    ///     číslom v inom čase sú rôzne jazdy.
     /// </remarks>
     public IReadOnlyList<Train> SkippedDuplicates { get; private set; } = new List<Train>();
 
@@ -70,14 +71,19 @@ public sealed class DayPlanner
 
         var byNumber = trains
             .Where(train => !GvdData.IsBus(train))
-            .GroupBy(train => train.Number)
+            .GroupBy(train => _gvd.IsIniss2 ? (train.Number, train.Arrival, train.Departure) : (train.Number, null, null))
             .ToList();
 
         SkippedDuplicates = byNumber.SelectMany(group => group.Skip(1)).ToList();
 
         var runs = byNumber
             .Select(group => group.First())
-            .Select(train => new TrainRun(train, GvdData.ArrivalOn(train, day), GvdData.DepartureOn(train, day)))
+            .Select(train => new TrainRun(train, GvdData.ArrivalOn(train, day), GvdData.DepartureOn(train, day))
+            {
+                ArrivalNumber = _gvd.ArrivalNumber(train),
+                DepartureNumber = _gvd.DepartureNumber(train),
+                Iniss2 = _gvd.IsIniss2
+            })
             .Where(run => run.PlannedArrival.HasValue || run.PlannedDeparture.HasValue)
             .OrderBy(run => run.PlannedArrival ?? run.PlannedDeparture)
             .ThenBy(run => run.Train.ID)
@@ -87,7 +93,7 @@ public sealed class DayPlanner
         {
             AssignDelays(run, delays);
             AssignDelayReason(run, random);
-            AssignTrack(run, allocator, random);
+            AssignTrack(run, _gvd.TrackOn(run.Train, day), allocator, random);
 
             run.Drawn = run.Current;
             run.ResetEvents(RunEvents.Build(run, _options));
@@ -128,12 +134,12 @@ public sealed class DayPlanner
         run.DelayReason = _options.DelayReasons[random.Next(_options.DelayReasons.Count)];
     }
 
-    private void AssignTrack(TrainRun run, TrackAllocator allocator, Random random)
+    private void AssignTrack(TrainRun run, Track? timetable, TrackAllocator allocator, Random random)
     {
         RunEvents.UpdateOccupancy(run, _options);
 
-        var planned = GvdData.HasRealTrack(run.Train) && TrackAllocator.CanUse(run.Train.Track)
-            ? run.Train.Track
+        var planned = GvdData.IsRealTrack(timetable) && TrackAllocator.CanUse(timetable)
+            ? timetable
             : null;
 
         if (planned is not null && !allocator.IsManaged(planned))
@@ -147,7 +153,7 @@ public sealed class DayPlanner
         if (planned is null)
         {
             var assigned = allocator.ReserveAny(run.OccupiedFrom, run.OccupiedTo, random);
-            run.Track = assigned ?? run.Train.Track ?? Track.None;
+            run.Track = assigned ?? timetable ?? Track.None;
             run.TrackSource = assigned is null ? TrackSource.Conflict : TrackSource.Assigned;
             return;
         }

@@ -46,13 +46,20 @@ public sealed class GtnMessageBuilder
     {
         ArgumentNullException.ThrowIfNull(simEvent);
 
+        var run = simEvent.Run;
+        var arriving = simEvent.Kind is SimEventKind.EntryRoute or SimEventKind.Arrival;
+
         var message = new GtnMessage
         {
             StationField = StationField,
-            TrainNumber = simEvent.Run.Train.Number,
+            TrainNumber = arriving ? run.ArrivalNumber : run.DepartureNumber,
             Time = simEvent.Time,
             Track = simEvent.Track?.Key ?? ""
         };
+
+        // server INISS2 bez pravidelneho casu spravu zahodi, vjazdovu cestu paruje podla prichodu
+        if (run.Iniss2 && simEvent.Kind != SimEventKind.DelayReason)
+            message.RegularTime = arriving ? run.PlannedArrival : run.PlannedDeparture;
 
         switch (simEvent.Kind)
         {

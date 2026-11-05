@@ -14,13 +14,14 @@ public sealed class GvdData
     private static readonly int BusTypeIndex = ExprTrainTypes.IndexOf("Bus");
 
     internal GvdData(GVDInfo info, List<TrainType> trainTypes, List<Track> tracks, List<Train> trains,
-        Dictionary<int, BitArray> trainDays)
+        Dictionary<int, BitArray> trainDays, Iniss2Source? iniss2 = null)
     {
         Info = info;
         TrainTypes = trainTypes;
         Tracks = tracks;
         Trains = trains;
         TrainDays = trainDays;
+        Iniss2 = iniss2;
     }
 
     /// <summary>
@@ -50,6 +51,16 @@ public sealed class GvdData
     public Dictionary<int, BitArray> TrainDays { get; }
 
     /// <summary>
+    ///     Údaje servera INISS2, alebo <see langword="null" /> pri grafikone INISS 3.39.
+    /// </summary>
+    public Iniss2Source? Iniss2 { get; }
+
+    /// <summary>
+    ///     Grafikon patrí serveru INISS2: správy musia niesť pravidelný čas a dôvody meškania ani prestupy server neprijíma.
+    /// </summary>
+    public bool IsIniss2 => Iniss2 is not null;
+
+    /// <summary>
     ///     Identifikátor stanice, pre ktorú je grafikon urobený.
     /// </summary>
     public int StationId => int.Parse(Info.ThisStation.ID, CultureInfo.InvariantCulture);
@@ -77,6 +88,43 @@ public sealed class GvdData
     /// <param name="day">Deň.</param>
     /// <returns>Vlaky idúce v ten deň.</returns>
     public IEnumerable<Train> TrainsOn(DateTime day) => Trains.Where(train => RunsOn(train, day));
+
+    /// <summary>
+    ///     Vráti koľaj vlaku podľa grafikonu. V INISS2 závisí od dňa.
+    /// </summary>
+    /// <param name="train">Vlak.</param>
+    /// <param name="day">Deň, keď vlak ide stanicou.</param>
+    /// <returns>Koľaj, alebo <see langword="null" />, ak ju vlak v ten deň nemá.</returns>
+    public Track? TrackOn(Train train, DateTime day)
+    {
+        ArgumentNullException.ThrowIfNull(train);
+
+        return Iniss2 is null ? train.Track : Iniss2.TrackOn(train, day);
+    }
+
+    /// <summary>
+    ///     Vráti číslo vlaku pri príchode. V INISS2 môže vlak v stanici zmeniť číslo.
+    /// </summary>
+    /// <param name="train">Vlak.</param>
+    /// <returns>Číslo vlaku.</returns>
+    public string ArrivalNumber(Train train)
+    {
+        ArgumentNullException.ThrowIfNull(train);
+
+        return Iniss2?.ArrivalNumber(train) ?? train.Number;
+    }
+
+    /// <summary>
+    ///     Vráti číslo vlaku pri odchode.
+    /// </summary>
+    /// <param name="train">Vlak.</param>
+    /// <returns>Číslo vlaku.</returns>
+    public string DepartureNumber(Train train)
+    {
+        ArgumentNullException.ThrowIfNull(train);
+
+        return Iniss2?.DepartureNumber(train) ?? train.Number;
+    }
 
     /// <summary>
     ///     Vráti čas príchodu vlaku v zadaný deň.
@@ -134,6 +182,13 @@ public sealed class GvdData
     {
         ArgumentNullException.ThrowIfNull(train);
 
-        return train.Track is not null && train.Track != Track.None && !string.IsNullOrWhiteSpace(train.Track.TrackName);
+        return IsRealTrack(train.Track);
     }
+
+    /// <summary>
+    ///     Zistí, či je koľaj skutočná - nie je predvolená ani nedefinovaná.
+    /// </summary>
+    /// <param name="track">Koľaj.</param>
+    /// <returns><see langword="true" />, ak je koľaj skutočná.</returns>
+    public static bool IsRealTrack(Track? track) => track is not null && track != Track.None && !string.IsNullOrWhiteSpace(track.TrackName);
 }

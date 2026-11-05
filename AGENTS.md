@@ -7,6 +7,7 @@ Pravidlá desktopových programov (WinForms, texty v `Resources`, ručné `*.Des
 ## Štruktúra a zásady
 
 - Projekty: `ILTISSimulator` (`FMain` rozdelený na partial podľa oblastí – `Run`, `Gvd`, `Scenario`, `GtnLog`, `Manual`, `Log`; `Net/GtnClient` – spojenie s INISSom, `Simulation/SimulationEngine` – plán a tik simulácie, `Monitor/GtnLogTail` – odpovede INISSu z `GTN.LOG`), `ILTISSimulatorTests`, `ILTISSimulator.DocScreenshots`.
+- INISS2: otvorený priečinok stanice (`Data\<grafikon>\<stanica>`) spozná `Data/Iniss2GvdReader` a naplní rovnaký `GvdData`; každé zastavenie varianty je `Train` s dňami platnej varianty a platnosťou posunutou na deň v stanici. Rozdiely ide cez `GvdData.Iniss2` (`IsIniss2`, `TrackOn` – koľaj podľa dňa, `ArrivalNumber`/`DepartureNumber`) a `TrainRun.Iniss2`: `GtnMessageBuilder` pridá pravidelný čas (vjazdová cesta podľa príchodu), `RunEvents` vynechá dôvod meškania, 0805 a 0806 nie sú v ponukách. Port a denný log berie zo servera. Správanie servera je v `iniss-tools-docs/docs/iniss2/protokoly/gtn.mdx`.
 - DPI PerMonitorV2 (na rozdiel od ostatných programov) – rozmery z návrhu sa neškálujú samy, treba `Control.Scale` podľa `DeviceDpi`.
 - Záznam v hlavnom okne (`AppendLog`) je len pre obsluhu; do logu programu sa zapisujú pripojenia a chyby s výnimkou (`SimulationEngine` má udalosť `Log` – tam `Serilog.Log`). Každá správa protokolu nanajvýš Debug.
 
