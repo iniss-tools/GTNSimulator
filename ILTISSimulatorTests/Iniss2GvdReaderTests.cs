@@ -143,6 +143,7 @@ public class Iniss2GvdReaderTests
     public void FindStations_WorksFromEveryLevelOfInstallation()
     {
         Write("DirList.xml", """<DL><g n="2030"><i s="5400010" d="01 Lipovec" /><i s="5400020" d="02 Horany" /></g></DL>""");
+        Write(@"2030\02 Horany\SR70.TXT", "5400020\r\n");
         Write(@"2030\02 Horany\PositionsDef.xml", "<POZICE />");
 
         var root = Path.GetDirectoryName(_serverDir)!;
@@ -157,11 +158,20 @@ public class Iniss2GvdReaderTests
     }
 
     [TestMethod]
-    public void FindStations_SkipsMissingFolders()
+    public void FindStations_SkipsFoldersWithoutStationFiles()
+    {
+        Write("DirList.xml", """<DL><g n="2030"><i s="5400010" d="01 Lipovec" /><i s="5400020" d="02 Horany" /></g></DL>""");
+        Write(@"2030\02 Horany\SR70.TXT", "5400020\r\n");
+
+        Assert.HasCount(1, Iniss2GvdReader.FindStations(_serverDir)!);
+    }
+
+    [TestMethod]
+    public void FindStations_StationWithoutNumberIsRejectedLikeOnServer()
     {
         Write("DirList.xml", """<DL><g n="2030"><i s="5400010" d="01 Lipovec" /><i s="5400020" d="02 Horany" /></g></DL>""");
 
-        Assert.HasCount(1, Iniss2GvdReader.FindStations(_serverDir)!);
+        Assert.Throws<IOException>(() => Iniss2GvdReader.FindStations(_serverDir));
     }
 
     [TestMethod]
@@ -311,6 +321,7 @@ public class Iniss2GvdReaderTests
     public void Read_UnknownStationIsRejected()
     {
         Write("DirList.xml", """<DL><g n="2030"><i s="5400010" d="02 Horany" /></g></DL>""");
+        Write(@"2030\02 Horany\SR70.TXT", "5400010\r\n");
 
         Assert.ThrowsExactly<FormatException>(Read);
     }
