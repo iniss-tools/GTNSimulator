@@ -1,6 +1,5 @@
 using ILTISSimulator.Gtn;
 using ILTISSimulator.Properties;
-using ILTISSimulator.Simulation;
 using ILTISSimulator.Tools;
 
 namespace ILTISSimulator;

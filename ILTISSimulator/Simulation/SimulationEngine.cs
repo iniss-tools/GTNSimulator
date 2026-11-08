@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using ILTISSimulator.Data;
-using ILTISSimulator.Gtn;
 using ILTISSimulator.Properties;
 using ILTISSimulator.Tools;
 
@@ -453,39 +452,4 @@ public sealed class SimulationEngine : IDisposable
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
     }
-}
-
-/// <summary>
-///     Údaje udalosti <see cref="SimulationEngine.PlanChanged" />.
-/// </summary>
-public sealed class PlanChangedEventArgs : EventArgs
-{
-    internal PlanChangedEventArgs(IReadOnlyList<TrainRun> runs) => Runs = runs;
-
-    /// <summary>
-    ///     Zmenené jazdy.
-    /// </summary>
-    public IReadOnlyList<TrainRun> Runs { get; }
-}
-
-/// <summary>
-///     Údaje udalosti <see cref="SimulationEngine.EventDue" />.
-/// </summary>
-public sealed class SimEventDueEventArgs : EventArgs
-{
-    internal SimEventDueEventArgs(SimEvent simEvent, GtnMessage message)
-    {
-        SimEvent = simEvent;
-        Message = message;
-    }
-
-    /// <summary>
-    ///     Udalosť simulácie.
-    /// </summary>
-    public SimEvent SimEvent { get; }
-
-    /// <summary>
-    ///     Hotová správa pripravená na odoslanie.
-    /// </summary>
-    public GtnMessage Message { get; }
 }

@@ -1,4 +1,3 @@
-using ExControls;
 using ILTISSimulator.Properties;
 using ILTISSimulator.XML;
 using ToolsCore;

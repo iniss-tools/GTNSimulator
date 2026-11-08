@@ -3,7 +3,6 @@ using ILTISSimulator.Data;
 using ILTISSimulator.Properties;
 using ILTISSimulator.Simulation;
 using ILTISSimulator.Tools;
-using ILTISSimulator.XML;
 using ToolsCore.Icons;
 using ToolsCore.Tools;
 

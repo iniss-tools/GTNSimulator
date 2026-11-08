@@ -9,30 +9,6 @@ using ILTISSimulator.Tools;
 namespace ILTISSimulator.Diagram;
 
 /// <summary>
-///     Presun vlaka v koľajovom diagrame.
-/// </summary>
-/// <param name="run">Jazda vlaku.</param>
-/// <param name="track">Nová koľaj, alebo <see langword="null" />, ak sa koľaj nemení.</param>
-/// <param name="minutes">O koľko minút sa vlak posunul, záporné = skôr.</param>
-internal sealed class DiagramMoveEventArgs(TrainRun run, Track? track, int minutes) : EventArgs
-{
-    /// <summary>
-    ///     Jazda vlaku.
-    /// </summary>
-    public TrainRun Run { get; } = run;
-
-    /// <summary>
-    ///     Nová koľaj, alebo <see langword="null" />, ak sa koľaj nemení.
-    /// </summary>
-    public Track? Track { get; } = track;
-
-    /// <summary>
-    ///     O koľko minút sa vlak posunul.
-    /// </summary>
-    public int Minutes { get; } = minutes;
-}
-
-/// <summary>
 ///     Koľajový diagram - koľaje stanice pod sebou, vodorovne čas a každý vlak ako pruh od postavenia vchodovej
 ///     cesty po uvoľnenie koľaje. Vlak sa dá potiahnuť na inú koľaj (zvisle) a posunúť v čase (vodorovne), výber
 ///     zdieľa s tabuľkou plánu. Koliesko myši posúva čas, s Shift koľaje, s Ctrl mení mierku.

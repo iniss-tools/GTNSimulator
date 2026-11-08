@@ -4,22 +4,6 @@ using ILTISSimulator.Simulation;
 namespace ILTISSimulator.Diagram;
 
 /// <summary>
-///     Pruh vlaku v koľajovom diagrame - jazda a riadok v rámci koľaje.
-/// </summary>
-/// <param name="Run">Jazda vlaku.</param>
-/// <param name="Row">Riadok v koľaji - viac riadkov má koľaj len pri súbehu vlakov.</param>
-public sealed record DiagramBar(TrainRun Run, int Row);
-
-/// <summary>
-///     Koľaj v koľajovom diagrame s pruhmi vlakov, ktoré ju držia.
-/// </summary>
-/// <param name="Track">Koľaj.</param>
-/// <param name="Excluded">Koľaj je vynechaná z plánovania - simulátor na ňu sám vlaky nestavia.</param>
-/// <param name="Rows">Počet riadkov, aspoň jeden.</param>
-/// <param name="Bars">Pruhy vlakov zoradené podľa začiatku obsadenia.</param>
-public sealed record DiagramLane(Track Track, bool Excluded, int Rows, IReadOnlyList<DiagramBar> Bars);
-
-/// <summary>
 ///     Rozloženie koľajového diagramu - koľaje v poradí grafikonu a vlaky na nich.
 /// </summary>
 public static class DiagramLanes
