@@ -24,6 +24,7 @@ Vydanie: značka `vX.Y` spustí `.github/workflows/release.yml` (spoločný post
 ## Spoločné pravidlá
 
 - `Directory.Build.props`: `TreatWarningsAsErrors`, `Nullable`, `ImplicitUsings`, `AnalysisLevel latest-recommended` – build bez jediného varovania; zámerne vypnuté pravidlá len tam (`NoWarn` s dôvodom), varovanie opraviť v kóde, výnimočné potlačenie priamo na nájdenom člene (`[SuppressMessage(..., Justification = ...)]`).
+- Jeden typ najvyššej úrovne na súbor (vnorené typy môžu ostať), viac súvisiacich súborov do vlastného priečinka.
 - Kultúra: UI `CultureInfo.CurrentCulture`, formáty, protokol a logy `InvariantCulture`.
 - GUI nespúšťať cez Bash – overuje ho používateľ ručne; bez klikania harness (reflexia + `DrawToBitmap`).
 - Testy MSTest, metódy `Oblast_CoOveruje`; do repa len testy s vlastnými dátami (korpusové overenie nad `D:\INISSroot` len na stroji používateľa).
