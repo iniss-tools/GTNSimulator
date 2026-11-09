@@ -1,5 +1,0 @@
-<Solution>
-  <Project Path="ILTISSimulator/ILTISSimulator.csproj" />
-  <Project Path="ILTISSimulator.DocScreenshots/ILTISSimulator.DocScreenshots.csproj" />
-  <Project Path="ILTISSimulatorTests/ILTISSimulatorTests.csproj" />
-</Solution>

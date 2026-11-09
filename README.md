@@ -1,10 +1,10 @@
-# ILTISSimulator
+# GTNSimulator
 
-Simulátor ILTIS systému pre posielanie príkazov do programu INISS cez TCP.
+Simulátor rozhrania GTN: posiela programu INISS cez TCP správy o vlakoch tak ako zabezpečovacie zariadenie (ILTIS od Siemensu, GTN od AZD Praha).
 
-> Nezávislý projekt, nie je spojený so spoločnosťou CHAPS ani s výrobcom systému ILTIS a nie je nimi podporovaný.
-> INISS je produkt spoločnosti CHAPS. Projekt neobsahuje žiadnu časť programu INISS ani jeho dáta; protokol medzi
-> ILTIS a INISSom bol zistený kvôli interoperabilite.
+> Nezávislý projekt, nie je spojený so spoločnosťou CHAPS ani s výrobcami systémov ILTIS a GTN a nie je nimi podporovaný.
+> INISS je produkt spoločnosti CHAPS. Projekt neobsahuje žiadnu časť programu INISS ani jeho dáta; protokol rozhrania
+> GTN bol zistený kvôli interoperabilite.
 
 ## Licencia
 

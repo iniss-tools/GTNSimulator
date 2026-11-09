@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="GTNSimulator/GTNSimulator.csproj" />
+  <Project Path="GTNSimulator.DocScreenshots/GTNSimulator.DocScreenshots.csproj" />
+  <Project Path="GTNSimulatorTests/GTNSimulatorTests.csproj" />
+</Solution>

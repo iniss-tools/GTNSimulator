@@ -1,4 +1,4 @@
-# Vydanie ILTISSimulatora: znacka vX.Y (git tag -a v1.10 -m "Co je nove" && git push origin v1.10) alebo nove vydanie
+# Vydanie GTNSimulatora: znacka vX.Y (git tag -a v1.10 -m "Co je nove" && git push origin v1.10) alebo nove vydanie
 # so znackou vX.Y zalozene na GitHube zostavi instalator a zverejni ho. Postup je v ToolsCore/Installer/README.md.
 name: Vydanie
 
@@ -18,8 +18,8 @@ jobs:
   release:
     uses: iniss-tools/ToolsCore/.github/workflows/release-app.yml@main
     with:
-      program: ILTISSimulator
+      program: GTNSimulator
       tag: ${{ inputs.tag || github.ref_name }}
-      project: ILTISSimulator/ILTISSimulator/ILTISSimulator.csproj
-      installer: ILTISSimulator/ILTISSimulatorInstaller.iss
+      project: GTNSimulator/GTNSimulator/GTNSimulator.csproj
+      installer: GTNSimulator/GTNSimulatorInstaller.iss
       dependencies: GVDEditor filif123/ExControls TableSimulator

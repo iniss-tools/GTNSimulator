@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<!-- Generator snímok okien GTNSimulatora pre dokumentáciu (iniss-tools-docs).
+	     Zostaví fiktívnu inštaláciu INISS (z harnessu GVDEditora), spustí proti falošnému INISSu
+	     simuláciu a uloží okná ako PNG vo svetlom aj tmavom režime. Spúšťa sa ručne. -->
+	<PropertyGroup>
+		<TargetFramework>net10.0-windows</TargetFramework>
+		<!-- konzolová aplikácia, aby priebeh a varovania išli do terminálu; okná WinForms zobrazí aj tak -->
+		<OutputType>Exe</OutputType>
+		<UseWindowsForms>true</UseWindowsForms>
+		<RootNamespace>GTNSimulator.DocScreenshots</RootNamespace>
+		<AssemblyName>GTNSimulator.DocScreenshots</AssemblyName>
+		<!-- konfigurácia a register sa riadia názvom zostavy, takže ostávajú oddelené od GTNSimulatora -->
+		<Product>GTNSimulator</Product>
+		<PlatformTarget>x64</PlatformTarget>
+		<SatelliteResourceLanguages>cs</SatelliteResourceLanguages>
+		<!-- LibraryImport pre PrintWindow/DWM generuje unsafe kód -->
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	</PropertyGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\GTNSimulator\GTNSimulator.csproj" />
+		<!-- fiktívna inštalácia INISS (DemoInstallation) - rovnaká ako na snímkach GVDEditora -->
+		<ProjectReference Include="..\..\GVDEditor\GVDEditor.DocScreenshots\GVDEditor.DocScreenshots.csproj" />
+	</ItemGroup>
+</Project>
