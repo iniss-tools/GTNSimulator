@@ -78,6 +78,10 @@
             this.tsmimFollow = new ToolsCore.Icons.IconToolStripMenuItem();
             this.tsmimFind = new ToolsCore.Icons.IconToolStripMenuItem();
             this.tssView1 = new System.Windows.Forms.ToolStripSeparator();
+            this.tssView2 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsmimShowLog = new ToolsCore.Icons.IconToolStripMenuItem();
+            this.tssView3 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsmimResetLayout = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmimTopMost = new ToolsCore.Icons.IconToolStripMenuItem();
             this.tsmiSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmimAppSettings = new ToolsCore.Icons.IconToolStripMenuItem();
@@ -523,13 +527,17 @@
             // tsmiView
             // 
             this.tsmiView.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmimManualMessage,
             this.tsmimTrackDiagram,
             this.tsmimHideFinished,
             this.tsmimFollow,
             this.tsmimFind,
             this.tssView1,
-            this.tsmimTopMost});
+            this.tsmimTopMost,
+            this.tssView2,
+            this.tsmimShowLog,
+            this.tsmimManualMessage,
+            this.tssView3,
+            this.tsmimResetLayout});
             resources.ApplyResources(this.tsmiView, "tsmiView");
             this.tsmiView.Name = "tsmiView";
             // 
@@ -573,6 +581,27 @@
             resources.ApplyResources(this.tsmimTopMost, "tsmimTopMost");
             this.tsmimTopMost.IconName = "pin";
             this.tsmimTopMost.Name = "tsmimTopMost";
+            // 
+            // tssView2
+            // 
+            resources.ApplyResources(this.tssView2, "tssView2");
+            this.tssView2.Name = "tssView2";
+            // 
+            // tsmimShowLog
+            // 
+            resources.ApplyResources(this.tsmimShowLog, "tsmimShowLog");
+            this.tsmimShowLog.IconName = "document";
+            this.tsmimShowLog.Name = "tsmimShowLog";
+            // 
+            // tssView3
+            // 
+            resources.ApplyResources(this.tssView3, "tssView3");
+            this.tssView3.Name = "tssView3";
+            // 
+            // tsmimResetLayout
+            // 
+            resources.ApplyResources(this.tsmimResetLayout, "tsmimResetLayout");
+            this.tsmimResetLayout.Name = "tsmimResetLayout";
             // 
             // tsmiSettings
             // 
@@ -1658,6 +1687,10 @@
         private ToolsCore.Icons.IconToolStripMenuItem tsmimFollow;
         private ToolsCore.Icons.IconToolStripMenuItem tsmimFind;
         private System.Windows.Forms.ToolStripSeparator tssView1;
+        private System.Windows.Forms.ToolStripSeparator tssView2;
+        private ToolsCore.Icons.IconToolStripMenuItem tsmimShowLog;
+        private System.Windows.Forms.ToolStripSeparator tssView3;
+        private System.Windows.Forms.ToolStripMenuItem tsmimResetLayout;
         private ToolsCore.Icons.IconToolStripMenuItem tsmimTopMost;
         private System.Windows.Forms.ToolStripMenuItem tsmiSettings;
         private ToolsCore.Icons.IconToolStripMenuItem tsmimAppSettings;

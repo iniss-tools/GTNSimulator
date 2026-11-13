@@ -824,4 +824,16 @@ Hodnoty z příkazového řádku platí do zavření programu, nastavení se nem
   <data name="Settings_ReopenLast" xml:space="preserve">
     <value>Při spuštění otevřít naposledy otevřený grafikon</value>
   </data>
+  <data name="Panel_Log" xml:space="preserve">
+    <value>Záznam</value>
+  </data>
+  <data name="Panel_ManualMessage" xml:space="preserve">
+    <value>Ruční zpráva</value>
+  </data>
+  <data name="Cmd_ShowLog" xml:space="preserve">
+    <value>Zobrazit panel Záznam</value>
+  </data>
+  <data name="Cmd_ResetLayout" xml:space="preserve">
+    <value>Obnovit rozložení okna</value>
+  </data>
 </root>

@@ -522,4 +522,10 @@
   <data name="tsmimShowLogs.Text" xml:space="preserve">
     <value>Otevřít složku s logy</value>
   </data>
+  <data name="tsmimShowLog.Text" xml:space="preserve">
+    <value>&amp;Záznam</value>
+  </data>
+  <data name="tsmimResetLayout.Text" xml:space="preserve">
+    <value>&amp;Obnovit rozložení okna</value>
+  </data>
 </root>

@@ -2322,5 +2322,41 @@ namespace GTNSimulator.Properties {
                 return ResourceManager.GetString("Settings_ReopenLast", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Záznam.
+        /// </summary>
+        internal static string Panel_Log {
+            get {
+                return ResourceManager.GetString("Panel_Log", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ručná správa.
+        /// </summary>
+        internal static string Panel_ManualMessage {
+            get {
+                return ResourceManager.GetString("Panel_ManualMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zobraziť panel Záznam.
+        /// </summary>
+        internal static string Cmd_ShowLog {
+            get {
+                return ResourceManager.GetString("Cmd_ShowLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Obnoviť rozloženie okna.
+        /// </summary>
+        internal static string Cmd_ResetLayout {
+            get {
+                return ResourceManager.GetString("Cmd_ResetLayout", resourceCulture);
+            }
+        }
     }
 }

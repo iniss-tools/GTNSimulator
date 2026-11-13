@@ -156,7 +156,7 @@ internal sealed partial class FMain
     /// </summary>
     private void FillManualFromSelection()
     {
-        if (!pManual.Visible || SelectedRuns() is not [var run, ..])
+        if (!_manualPanel.IsShown || SelectedRuns() is not [var run, ..])
             return;
 
         _manualUpdating = true;
@@ -174,7 +174,7 @@ internal sealed partial class FMain
     /// </summary>
     private void RefreshManualTime()
     {
-        if (!pManual.Visible || !cbManualNow.Checked || tbManual.Text.Trim() != _manualGenerated.Trim())
+        if (!_manualPanel.IsShown || !cbManualNow.Checked || tbManual.Text.Trim() != _manualGenerated.Trim())
             return;
 
         _manualUpdating = true;

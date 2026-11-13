@@ -49,9 +49,11 @@ internal sealed partial class FMain : ExForm
         _commandLine = commandLine ?? throw new ArgumentNullException(nameof(commandLine));
 
         InitializeComponent();
+        InitDocking();
         InitToolbar();
 
         this.ApplyThemeAndFonts();
+        AppDock.Restore(_dock, Config.DockLayout);
         ApplySearchBoxTheme();
         ApplyMenuMode();
 
@@ -119,12 +121,12 @@ internal sealed partial class FMain : ExForm
         _commands.Add(GtnSimCommands.Suppress, ToggleSuppressed, selection).Bind(tsmimSuppress, cmimSuppress, tsbSuppress);
         _commands.Add(GtnSimCommands.Revert, RevertSelected, selection).Bind(tsmimRevert, cmimRevert, tsbRevert);
 
-        _commands.Add(GtnSimCommands.ManualMessage, () => SetManualVisible(!Config.View.ManualMessage)).Bind(tsmimManualMessage, tsbManualMessage);
         _commands.Add(GtnSimCommands.TrackDiagram, () => SetTrackDiagramVisible(!Config.View.TrackDiagram)).Bind(tsmimTrackDiagram, tsbTrackDiagram);
         _commands.Add(GtnSimCommands.HideFinished, () => SetHideFinished(!Config.View.HideFinished)).Bind(tsmimHideFinished, tsbHideFinished);
         _commands.Add(GtnSimCommands.Follow, () => SetFollow(!Config.View.FollowCurrent)).Bind(tsmimFollow, tsbFollow);
         _commands.Add(GtnSimCommands.Find, FocusSearch).Bind(tsmimFind);
         _commands.Add(GtnSimCommands.TopMost, () => SetTopMost(!Config.View.TopMost)).Bind(tsmimTopMost);
+        CreateViewCommands();
 
         _commands.Add(GtnSimCommands.AppSettings, ShowAppSettings).Bind(tsmimAppSettings, tsbAppSettings);
         _commands.Add(GtnSimCommands.Docs, () => Utils.OpenShell(DocsLink)).Bind(tsmimDocs);
@@ -147,7 +149,6 @@ internal sealed partial class FMain : ExForm
         cmimSendNow.Enabled = tsmimSendNow.Enabled;
 
         SetChecked(GtnSimCommands.SendToIniss, _sendToIniss);
-        SetChecked(GtnSimCommands.ManualMessage, Config.View.ManualMessage);
         SetChecked(GtnSimCommands.TrackDiagram, Config.View.TrackDiagram);
         SetChecked(GtnSimCommands.HideFinished, Config.View.HideFinished);
         SetChecked(GtnSimCommands.Follow, Config.View.FollowCurrent);
@@ -189,7 +190,7 @@ internal sealed partial class FMain : ExForm
     {
         // pocas upravy bunky a pisania patria klavesy prvku (Ctrl+Del, Ctrl+D...), funkcne klavesy ostavaju prikazom
         var key = keyData & Keys.KeyCode;
-        var typing = dgvPlan.IsCurrentCellInEditMode || tstbSearch.Focused || ActiveControl is TextBoxBase or ComboBox;
+        var typing = dgvPlan.IsCurrentCellInEditMode || tstbSearch.Focused || FocusedControl() is TextBoxBase or ComboBox;
         if (typing && key is < Keys.F1 or > Keys.F24)
             return base.ProcessCmdKey(ref msg, keyData);
 
@@ -295,7 +296,6 @@ internal sealed partial class FMain : ExForm
     private void InitView()
     {
         _sendToIniss = Config.View.SendToIniss;
-        pManual.Visible = Config.View.ManualMessage;
         TopMost = Config.View.TopMost;
         InitDiagram();
     }
@@ -307,18 +307,6 @@ internal sealed partial class FMain : ExForm
         SaveConfig();
         UpdateCommandStates();
         AppendLog(LogKind.Info, value ? Resources.Log_SendOn : Resources.Log_SendOff);
-    }
-
-    private void SetManualVisible(bool value)
-    {
-        pManual.Visible = value;
-        Config.View.ManualMessage = value;
-        SaveConfig();
-
-        if (value)
-            FillManualFromSelection();
-
-        UpdateCommandStates();
     }
 
     private void SetHideFinished(bool value)
@@ -366,8 +354,6 @@ internal sealed partial class FMain : ExForm
         if (!string.IsNullOrWhiteSpace(path) && Directory.Exists(path))
             LoadGvd(path);
 
-        if (splitMain.Height > splitMain.Panel1MinSize + splitMain.Panel2MinSize + splitMain.SplitterWidth)
-            splitMain.SplitterDistance = splitMain.Height * 65 / 100;
         ApplyDiagramVisible();
 
         // az ked je okno zobrazene - hlasenia o chybnych argumentoch a zaznam behu maju byt vidno
@@ -431,7 +417,7 @@ internal sealed partial class FMain : ExForm
         _client?.Dispose();
         _client = null;
 
+        // nastavenia (aj rozlozenie panelov) sa ulozia az po zatvoreni okna - InitDocking
         StopGtnLog();
-        SaveConfig();
     }
 }

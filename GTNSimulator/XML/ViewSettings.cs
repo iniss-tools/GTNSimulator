@@ -15,11 +15,8 @@ public record ViewSettings
     [XmlElement("SendToIniss"), DefaultValue(true)]
     public bool SendToIniss { get; set; } = true;
 
-    /// <summary>
-    ///     Zobraziť panel ručnej správy.
-    /// </summary>
-    [XmlElement("ManualMessage"), DefaultValue(false)]
-    public bool ManualMessage { get; set; }
+    // panel rucnej spravy a zaznam su v ConfigBase.DockLayout (predtym ManualMessage - starsi config.xml ho obsahuje,
+    // XmlSerializer nezname prvky vynecha)
 
     /// <summary>
     ///     Skryť vlaky, ktorých jazda v stanici už skončila.

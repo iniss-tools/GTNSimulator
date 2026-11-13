@@ -87,7 +87,14 @@ internal sealed class MainWindow : IDisposable
     /// </summary>
     public void ShowManualMessage(bool visible)
     {
-        Invoke("SetManualVisible", visible);
+        // panel ručnej správy v ukotviteľnom paneli pod záznamom (FMain.Docking)
+        var dock = (ExControls.ExDockManager)Field("_dock")!;
+        var panel = (ExControls.ExDockPanel)Field("_manualPanel")!;
+        if (visible)
+            dock.ShowPanel(panel);
+        else
+            dock.HidePanel(panel);
+        Pump.Events();
         if (!visible)
             return;
 

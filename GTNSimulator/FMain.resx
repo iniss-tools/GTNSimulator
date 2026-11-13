@@ -3755,4 +3755,46 @@
   <data name="&gt;&gt;tsmimShowLogs.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="tssView2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>257, 6</value>
+  </data>
+  <data name="&gt;&gt;tssView2.Name" xml:space="preserve">
+    <value>tssView2</value>
+  </data>
+  <data name="&gt;&gt;tssView2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="tsmimShowLog.Size" type="System.Drawing.Size, System.Drawing">
+    <value>260, 26</value>
+  </data>
+  <data name="tsmimShowLog.Text" xml:space="preserve">
+    <value>&amp;Záznam</value>
+  </data>
+  <data name="&gt;&gt;tsmimShowLog.Name" xml:space="preserve">
+    <value>tsmimShowLog</value>
+  </data>
+  <data name="&gt;&gt;tsmimShowLog.Type" xml:space="preserve">
+    <value>ToolsCore.Icons.IconToolStripMenuItem, ToolsCore, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="tssView3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>257, 6</value>
+  </data>
+  <data name="&gt;&gt;tssView3.Name" xml:space="preserve">
+    <value>tssView3</value>
+  </data>
+  <data name="&gt;&gt;tssView3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="tsmimResetLayout.Size" type="System.Drawing.Size, System.Drawing">
+    <value>260, 26</value>
+  </data>
+  <data name="tsmimResetLayout.Text" xml:space="preserve">
+    <value>&amp;Obnoviť rozloženie okna</value>
+  </data>
+  <data name="&gt;&gt;tsmimResetLayout.Name" xml:space="preserve">
+    <value>tsmimResetLayout</value>
+  </data>
+  <data name="&gt;&gt;tsmimResetLayout.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

@@ -40,6 +40,8 @@ internal static class GtnSimCommands
     public static CommandInfo Follow => new("Follow", Resources.Cmd_Follow, Shortcut.None);
     public static CommandInfo Find => new("Find", Resources.Cmd_Find, Shortcut.CtrlF);
     public static CommandInfo TopMost => new("TopMost", Resources.Cmd_TopMost, Shortcut.None);
+    public static CommandInfo ShowLog => new("ShowLog", Resources.Cmd_ShowLog, Shortcut.None);
+    public static CommandInfo ResetLayout => new("ResetLayout", Resources.Cmd_ResetLayout, Shortcut.None);
     public static CommandInfo AppSettings => new("AppSettings", Resources.Cmd_AppSettings, Shortcut.CtrlShiftN);
     public static CommandInfo Docs => new("Docs", Resources.Cmd_Docs, Shortcut.F1);
 
@@ -56,7 +58,8 @@ internal static class GtnSimCommands
     [
         OpenGvd, ReloadGvd, OpenScenario, SaveScenario, Tracks, Connect, Plan, Start, Pause, Stop, Jump, Now, SendToIniss,
         SendNext, SendEntryRoute, SendReason, SendArrival, SendExitRoute, SendDeparture, Transfer, ExpressTransfer,
-        AddDelay, TrackClosure, Suppress, Revert, ManualMessage, TrackDiagram, HideFinished, Follow, Find, TopMost, AppSettings, Docs,
+        AddDelay, TrackClosure, Suppress, Revert, ManualMessage, TrackDiagram, HideFinished, Follow, Find, TopMost, ShowLog, ResetLayout,
+        AppSettings, Docs,
         InfoApp, CheckUpdates, ShowLogs, Exit
     ];
 }
