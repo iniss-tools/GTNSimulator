@@ -4,6 +4,7 @@ using ToolsCore;
 using ToolsCore.Commands;
 using ToolsCore.Forms;
 using ToolsCore.Iniss.Tools;
+using ToolsCore.Tools;
 using ToolsCore.XML;
 
 namespace GTNSimulator;
@@ -135,7 +136,7 @@ internal sealed partial class FAppSettings : FAppSettingsBase
         bBrowseGtnLog.Enabled = cboxWatchGtnLog.Checked;
     }
 
-    private void bBrowseGtnLog_Click(object? sender, EventArgs e)
+    private async void bBrowseGtnLog_Click(object? sender, EventArgs e)
     {
         using var dialog = new OpenFileDialog
         {
@@ -148,7 +149,7 @@ internal sealed partial class FAppSettings : FAppSettingsBase
         if (!string.IsNullOrEmpty(dir) && Directory.Exists(dir))
             dialog.InitialDirectory = dir;
 
-        if (dialog.ShowDialog(this) == DialogResult.OK)
+        if (await dialog.ShowDialogAsync(this) == DialogResult.OK && !IsDisposed)
             tbGtnLog.Text = dialog.FileName;
     }
 }

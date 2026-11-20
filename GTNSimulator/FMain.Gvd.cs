@@ -15,7 +15,7 @@ internal sealed partial class FMain
     private IReadOnlyList<DelayReason> _delayReasons = [];
     private ISet<string> _excludedTracks = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-    private void ChooseGvd()
+    private async void ChooseGvd()
     {
         if (_gvdDir is not null && Directory.Exists(_gvdDir))
             fbdGvd.SelectedPath = _gvdDir;
@@ -23,7 +23,7 @@ internal sealed partial class FMain
         fbdGvd.Description = Resources.Main_ChooseGvdDir;
         fbdGvd.UseDescriptionForTitle = true;
 
-        if (fbdGvd.ShowDialog(this) == DialogResult.OK)
+        if (await fbdGvd.ShowDialogAsync(this) == DialogResult.OK && !IsDisposed)
             LoadGvd(fbdGvd.SelectedPath);
     }
 

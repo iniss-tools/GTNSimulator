@@ -4,19 +4,21 @@ using GTNSimulator.Properties;
 using GTNSimulator.Simulation;
 using GTNSimulator.Tools;
 using Serilog;
+using ToolsCore.Tools;
 
 namespace GTNSimulator;
 
 internal sealed partial class FMain
 {
-    private void SaveScenario()
+    private async void SaveScenario()
     {
         if (_gvd is null || _engine?.Runs is null)
             return;
 
         sfdScenario.Filter = Resources.Main_ScenarioFilter;
         sfdScenario.FileName = Texts.F(Resources.Main_ScenarioFileName, _gvd.Info.ThisStation.Name, _engine.Day);
-        if (sfdScenario.ShowDialog(this) != DialogResult.OK)
+        // okno je po zatvoreni dialogu volne skor, nez dialog dobehne - grafikon alebo plan sa medzitym mohol zmenit
+        if (await sfdScenario.ShowDialogAsync(this) != DialogResult.OK || IsDisposed || _gvd is null || _engine?.Runs is null)
             return;
 
         var scenario = DayScenario.Capture(_gvd.StationId, _engine.Day, _engine.PlannedFrom, _engine.Options, _engine.Runs);
@@ -33,13 +35,13 @@ internal sealed partial class FMain
         }
     }
 
-    private void OpenScenario()
+    private async void OpenScenario()
     {
         if (_gvd is null)
             return;
 
         ofdScenario.Filter = Resources.Main_ScenarioFilter;
-        if (ofdScenario.ShowDialog(this) != DialogResult.OK || !ConfirmDiscardChanges())
+        if (await ofdScenario.ShowDialogAsync(this) != DialogResult.OK || IsDisposed || !ConfirmDiscardChanges())
             return;
 
         OpenScenario(ofdScenario.FileName);
