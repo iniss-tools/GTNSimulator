@@ -22,4 +22,4 @@ jobs:
       tag: ${{ inputs.tag || github.ref_name }}
       project: GTNSimulator/GTNSimulator/GTNSimulator.csproj
       installer: GTNSimulator/GTNSimulatorInstaller.iss
-      dependencies: GVDEditor filif123/ExControls TableSimulator
+      dependencies: GVDEditor filif123/ExControls StationSimulator
