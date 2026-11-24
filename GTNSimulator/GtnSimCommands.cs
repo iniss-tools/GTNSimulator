@@ -49,6 +49,8 @@ internal static class GtnSimCommands
     public static CommandInfo InfoApp => new(nameof(InfoApp), nameof(InfoApp), Shortcut.None);
     public static CommandInfo CheckUpdates => new(nameof(CheckUpdates), nameof(CheckUpdates), Shortcut.None);
     public static CommandInfo ShowLogs => new(nameof(ShowLogs), nameof(ShowLogs), Shortcut.None);
+    public static CommandInfo ReportBug => new(nameof(ReportBug), nameof(ReportBug), Shortcut.None);
+    public static CommandInfo SuggestFeature => new(nameof(SuggestFeature), nameof(SuggestFeature), Shortcut.None);
     public static CommandInfo Exit => new(nameof(Exit), nameof(Exit), Shortcut.None);
 
     /// <summary>
@@ -60,6 +62,6 @@ internal static class GtnSimCommands
         SendNext, SendEntryRoute, SendReason, SendArrival, SendExitRoute, SendDeparture, Transfer, ExpressTransfer,
         AddDelay, TrackClosure, Suppress, Revert, ManualMessage, TrackDiagram, HideFinished, Follow, Find, TopMost, ShowLog, ResetLayout,
         AppSettings, Docs,
-        InfoApp, CheckUpdates, ShowLogs, Exit
+        InfoApp, CheckUpdates, ShowLogs, ReportBug, SuggestFeature, Exit
     ];
 }

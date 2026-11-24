@@ -90,6 +90,8 @@
             this.tsmimInfoApp = new ToolsCore.Icons.IconToolStripMenuItem();
             this.tsmimCheckUpdates = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmimShowLogs = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmimReportBug = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmimSuggestFeature = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMain = new System.Windows.Forms.ToolStrip();
             this.tssbOpenGvd = new ToolsCore.Icons.IconToolStripSplitButton();
             this.tsbReloadGvd = new ToolsCore.Icons.IconToolStripButton();
@@ -622,7 +624,9 @@
             this.tsmimDocs,
             this.tsmimInfoApp,
             this.tsmimCheckUpdates,
-            this.tsmimShowLogs});
+            this.tsmimShowLogs,
+            this.tsmimReportBug,
+            this.tsmimSuggestFeature});
             resources.ApplyResources(this.tsmiHelp, "tsmiHelp");
             this.tsmiHelp.Name = "tsmiHelp";
             // 
@@ -647,6 +651,16 @@
             //
             resources.ApplyResources(this.tsmimShowLogs, "tsmimShowLogs");
             this.tsmimShowLogs.Name = "tsmimShowLogs";
+            //
+            // tsmimReportBug
+            //
+            resources.ApplyResources(this.tsmimReportBug, "tsmimReportBug");
+            this.tsmimReportBug.Name = "tsmimReportBug";
+            //
+            // tsmimSuggestFeature
+            //
+            resources.ApplyResources(this.tsmimSuggestFeature, "tsmimSuggestFeature");
+            this.tsmimSuggestFeature.Name = "tsmimSuggestFeature";
             //
             // toolStripMain
             // 
@@ -1699,6 +1713,8 @@
         private ToolsCore.Icons.IconToolStripMenuItem tsmimInfoApp;
         private System.Windows.Forms.ToolStripMenuItem tsmimCheckUpdates;
         private System.Windows.Forms.ToolStripMenuItem tsmimShowLogs;
+        private System.Windows.Forms.ToolStripMenuItem tsmimReportBug;
+        private System.Windows.Forms.ToolStripMenuItem tsmimSuggestFeature;
         private System.Windows.Forms.ToolStrip toolStripMain;
         private ToolsCore.Icons.IconToolStripSplitButton tssbOpenGvd;
         private ToolsCore.Icons.IconToolStripButton tsbReloadGvd;

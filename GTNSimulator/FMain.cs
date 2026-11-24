@@ -133,6 +133,8 @@ internal sealed partial class FMain : ExForm
         _commands.Add(GtnSimCommands.InfoApp, ShowInfoApp).Bind(tsmimInfoApp);
         _commands.Add(GtnSimCommands.CheckUpdates, () => AppUpdates.CheckNow(this), () => AppUpdates.Available).Bind(tsmimCheckUpdates);
         _commands.Add(GtnSimCommands.ShowLogs, ErrorReport.OpenLogFolder).Bind(tsmimShowLogs);
+        _commands.Add(GtnSimCommands.ReportBug, () => IssueReport.ReportBug()).Bind(tsmimReportBug);
+        _commands.Add(GtnSimCommands.SuggestFeature, IssueReport.SuggestFeature).Bind(tsmimSuggestFeature);
     }
 
     /// <summary>
